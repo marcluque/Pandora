@@ -1,0 +1,93 @@
+if (headline.length() > 0 && !headline.startsWith("http")) {
+                                if (!Character.isDigit(headline.charAt(0)) && Character.isAlphabetic(headline.charAt(0))) {
+                                    headline = headline.toLowerCase().trim().replaceAll(SANITIZER, "").replaceAll("[.,$]", "");
+                                    headline = replaceUmlaut(headline);
+                                    if (headline.length() > 0) {
+                                        System.out.println(url + " : " + headline);
+                                    }
+                                }
+                            }
+
+        /*PreparedStatement statement = session.prepare(
+                String.format("SELECT keyword FROM %s WHERE key=?;", tableName));
+
+        BoundStatement boundStatement = new BoundStatement(statement);
+
+        return session.execute(boundStatement.bind((key))) != null;*/
+
+    /*public boolean insert2(String tableName, String[] columns, Object[] values) {
+        String[] insertValues = new String[values.length];
+        for (int i = 0; i < values.length; i++) {
+            insertValues[i] = "?";
+        }
+
+        PreparedStatement statement = session.prepare(QueryBuilder.insertInto(tableName).values(columns, insertValues));
+        BoundStatement boundStatement = new BoundStatement(statement);
+
+        return session.execute(boundStatement.bind((Object[]) values)) != null;
+    }*/
+
+//urlFavicon = doc.select("link[rel=icon]").attr("href");
+//urlFavicon = (urlFavicon.length() > 0) ? repairUrl(urlFavicon) : null;
+
+// Other titles
+                /*doc.getElementsByAttribute("title").forEach(t -> {
+                    String title = t.attr("title").toLowerCase();
+                    if (title.length() > 0) {
+                        if (!keywords.contains(title) && !Character.isDigit(title.charAt(0))) {
+                            for (String s : title.split("\\s+")) {
+                                if (s.length() > 0) {
+                                    if (!Character.isDigit(s.charAt(0)) && Character.isAlphabetic(s.charAt(0))) {
+                                        s = s.toLowerCase();
+                                        s = s.trim();
+                                        if (!keywords.contains(s)) {
+                                            s = s.replaceAll(sanitizer, "").replaceAll("[.,]", "");
+                                            keywords.add(s);
+                                            System.out.println(s);
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                });*/
+
+
+
+    /*private String repairUrl(String url) {
+        // Removes the 2 '//' in front of the link. In order to clean it up
+        url = url.replace("//", "");
+
+        // Check first if link is valid
+        if (validateUrl(url)) {
+            return url;
+        }
+        // Repairs the link, when there is just the protocol missing
+        else if (url.startsWith("www")) {
+            url = String.format("http://%s", url);
+            if (validateUrl(url)) {
+                return url;
+            }
+        }
+        // Repairs the link, when for instance just a "/terms" is given
+        else if (url.startsWith("/")) {
+            url = String.format("%s%s%s", "http://", url.split("/")[2], url);
+
+            if (validateUrl(url)) {
+                return url;
+            }
+        }
+        // Puts 'http://www.' in front so link works again
+        else if (!url.startsWith("http://") || !url.contains("www")) {
+            url = String.format("http://%s", url);
+            if (validateUrl(url)) {
+                return url;
+            }
+        }
+
+        return null;
+    }
+
+    private boolean validateUrl(String url) {
+        return (!(url.length() > 250) && UrlUtils.getUrlValidator().isValid(url));
+    }*/
