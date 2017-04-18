@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="CompilerConfiguration">
+    <annotationProcessing>
+      <profile name="Maven default annotation processors profile" enabled="true">
+        <sourceOutputDir name="target/generated-sources/annotations" />
+        <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
+        <outputRelativeToContentRoot value="true" />
+        <module name="master" />
+        <module name="shared" />
+        <module name="slave" />
+      </profile>
+    </annotationProcessing>
+    <bytecodeTargetLevel>
+      <module name="master" target="1.8" />
+      <module name="Pandora" target="1.8" />
+      <module name="shared" target="1.8" />
+      <module name="slave" target="1.8" />
+    </bytecodeTargetLevel>
+  </component>
+</project>
