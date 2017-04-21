@@ -1,5 +1,6 @@
 package de.datasec.pandora.slave;
 
+import com.datastax.driver.core.policies.DefaultRetryPolicy;
 import de.datasec.pandora.shared.PandoraProtocol;
 import de.datasec.pandora.slave.database.CassandraManager;
 import de.datasec.pandora.slave.listener.SlavePacketListener;
@@ -29,7 +30,7 @@ public class Slave implements PacketListener {
         this.host = host;
         this.port = port;
         cassandraManager = new CassandraManager("127.0.0.1", "indexes");
-        //cassandraManager.connect(DefaultRetryPolicy.INSTANCE);
+        cassandraManager.connect(DefaultRetryPolicy.INSTANCE);
     }
 
     public void connect() {
