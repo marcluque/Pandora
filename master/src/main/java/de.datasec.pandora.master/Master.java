@@ -1,9 +1,9 @@
 package de.datasec.pandora.master;
 
 import de.datasec.pandora.master.bot.MasterBot;
+import de.datasec.pandora.master.config.MasterServerConfig;
 import de.datasec.pandora.master.roundrobinlist.LinkedRoundRobinList;
 import de.datasec.pandora.master.roundrobinlist.RoundRobinList;
-import de.datasec.pandora.master.config.MasterServerConfig;
 import de.datasec.pandora.shared.PandoraProtocol;
 import de.jackwhite20.cascade.server.Server;
 import de.jackwhite20.cascade.server.ServerFactory;
@@ -43,14 +43,14 @@ public class Master implements PacketListener {
             public void onConnected(Session session) {
                 sessions.add(session);
 
-                System.out.println("Slave connected!");
+                System.out.println("Slave connected! Amount of connected slaves: " + sessions.size());
             }
 
             @Override
             public void onDisconnected(Session session) {
                 sessions.remove(session);
 
-                System.out.println("Slave disconnected!");
+                System.out.println("Slave disconnected! Amount of connected slaves: " + sessions.size());
             }
 
             @Override

@@ -1,9 +1,9 @@
 C:\Dokumente\Programmierung\Java\pandora\master\src\main\java\de.datasec.pandora.master\config\MasterServerConfig.java
 C:\Dokumente\Programmierung\Java\pandora\master\src\main\java\de.datasec.pandora.master\Master.java
 C:\Dokumente\Programmierung\Java\pandora\master\src\main\java\de.datasec.pandora.master\listener\MasterBotListener.java
+C:\Dokumente\Programmierung\Java\pandora\master\src\main\java\de.datasec.pandora.master\roundrobinlist\RoundRobinList.java
 C:\Dokumente\Programmierung\Java\pandora\master\src\main\java\de.datasec.pandora.master\PandoraMaster.java
-C:\Dokumente\Programmierung\Java\pandora\master\src\main\java\de.datasec.pandora.master\concurrentlist\ConcurrentRoundRobinList.java
+C:\Dokumente\Programmierung\Java\pandora\master\src\main\java\de.datasec.pandora.master\roundrobinlist\Element.java
 C:\Dokumente\Programmierung\Java\pandora\master\src\main\java\de.datasec.pandora.master\bot\MasterBot.java
-C:\Dokumente\Programmierung\Java\pandora\master\src\main\java\de.datasec.pandora.master\concurrentlist\Element.java
-C:\Dokumente\Programmierung\Java\pandora\master\src\main\java\de.datasec.pandora.master\concurrentlist\RoundRobinList.java
+C:\Dokumente\Programmierung\Java\pandora\master\src\main\java\de.datasec.pandora.master\roundrobinlist\LinkedRoundRobinList.java
 C:\Dokumente\Programmierung\Java\pandora\master\src\main\java\de.datasec.pandora.master\listener\BotListener.java

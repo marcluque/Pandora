@@ -8,7 +8,7 @@ import java.util.Arrays;
 import java.util.List;
 
 /**
- * Created by Marc on 01.12.2016.
+ * Created by DataSec on 01.12.2016.
  */
 @PacketInfo(0)
 public class UrlPacket extends Packet {

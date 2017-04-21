@@ -1,15 +1,7 @@
 package de.datasec.pandora.slave;
 
-import com.datastax.driver.core.Statement;
-import com.datastax.driver.core.policies.DefaultRetryPolicy;
-import com.datastax.driver.core.querybuilder.QueryBuilder;
-import de.datasec.pandora.slave.database.CassandraManager;
-
-import java.util.HashSet;
-import java.util.Set;
-
 /**
- * Created by Marc on 27.11.2016.
+ * Created by DataSec on 27.11.2016.
  */
 public class PandoraSlave {
 

@@ -6,7 +6,6 @@ import org.jsoup.Connection;
 import org.jsoup.HttpStatusException;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
-import org.jsoup.nodes.Element;
 
 import java.io.IOException;
 import java.net.SocketTimeoutException;
@@ -14,6 +13,9 @@ import java.util.HashSet;
 import java.util.Set;
 import java.util.concurrent.BlockingQueue;
 
+/**
+ * Created by DataSec on 27.11.2016.
+ */
 public class SlaveCrawlerThread implements Runnable {
 
     private BlockingQueue<String> urls;
@@ -93,6 +95,7 @@ public class SlaveCrawlerThread implements Runnable {
 
             urlsToInsert.add(url);
 
+            System.out.println("URL: " + url);
             keywords.forEach(keyword -> Slave.getCassandraManager().insert("indexes", new String[]{"id", "keyword", "urls"}, new Object[]{7, keyword, urlsToInsert}));
 
             keywords.clear();
@@ -101,8 +104,7 @@ public class SlaveCrawlerThread implements Runnable {
     }
 
     private void evalUrl(String url) {
-        String urlEval = url.replace("www.", "");
-        String[] urlParts = urlEval.split("\\.");
+        String[] urlParts = url.replace("www.", "").split("\\.");
 
         // First subdomain/domain
         String domain = urlParts[0].split("/")[2];

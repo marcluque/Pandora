@@ -7,7 +7,7 @@ import de.jackwhite20.cascade.shared.protocol.listener.PacketListener;
 import de.jackwhite20.cascade.shared.session.Session;
 
 /**
- * Created by Marc on 27.11.2016.
+ * Created by DataSec on 27.11.2016.
  */
 public class SlavePacketListener implements PacketListener {
 
@@ -20,7 +20,8 @@ public class SlavePacketListener implements PacketListener {
     @PacketHandler
     public void onUrlsPacket(Session session, UrlPacket urlPacket) {
 
-        System.out.println("Received from Server: " + urlPacket);
+        //TODO: DELETE OR NOT?
+        //System.out.println("Received from Server: " + urlPacket);
 
         slaveCrawler.add(urlPacket.getLinksToCrawl());
     }
