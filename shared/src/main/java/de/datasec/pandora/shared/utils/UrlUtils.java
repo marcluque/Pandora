@@ -1,7 +1,7 @@
 package de.datasec.pandora.shared.utils;
 
 /**
- * Created by Marc on 26.12.2016.
+ * Created by DataSec on 26.12.2016.
  */
 public class UrlUtils {
 

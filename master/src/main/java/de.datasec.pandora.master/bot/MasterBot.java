@@ -1,7 +1,7 @@
 package de.datasec.pandora.master.bot;
 
-import de.datasec.pandora.master.roundrobinlist.RoundRobinList;
 import de.datasec.pandora.master.listener.MasterBotListener;
+import de.datasec.pandora.master.roundrobinlist.RoundRobinList;
 import de.datasec.pandora.shared.utils.UrlUtils;
 import de.jackwhite20.cascade.server.Server;
 import de.jackwhite20.cascade.shared.session.Session;
@@ -9,7 +9,6 @@ import org.apache.commons.validator.routines.UrlValidator;
 import org.jsoup.Connection;
 import org.jsoup.HttpStatusException;
 import org.jsoup.Jsoup;
-import org.jsoup.UnsupportedMimeTypeException;
 import org.jsoup.nodes.Document;
 
 import java.io.IOException;
@@ -20,7 +19,7 @@ import java.util.Set;
 import java.util.concurrent.ConcurrentLinkedQueue;
 
 /**
- * Created by Marc on 01.12.2016.
+ * Created by DataSec on 01.12.2016.
  */
 public class MasterBot {
 
@@ -121,9 +120,10 @@ public class MasterBot {
             urlsToVisit.offer(url);
             visited.add(url);
             masterBotListener.onUrl(url);
-            System.out.println("LINK: " + url);
+            //TODO: DELETE OR NOT?
+            //System.out.println("LINK: " + url);
 
-            if (visited.size() % 100 == 0) {
+            if (visited.size() % 1000 == 0) {
                 System.out.printf("VISITED: %d\nLINKS TO CRAWL: %d%n", visited.size(), urlsToVisit.size());
             }
         }

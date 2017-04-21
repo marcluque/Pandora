@@ -5,12 +5,11 @@ import de.jackwhite20.cascade.shared.protocol.Protocol;
 import de.jackwhite20.cascade.shared.protocol.listener.PacketListener;
 
 /**
- * Created by Marc on 27.11.2016.
+ * Created by DataSec on 27.11.2016.
  */
 public class PandoraProtocol extends Protocol {
 
     public PandoraProtocol(PacketListener packetListener) {
-
         registerListener(packetListener);
         registerPacket(UrlPacket.class);
     }

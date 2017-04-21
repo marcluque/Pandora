@@ -1,7 +1,7 @@
 package de.datasec.pandora.master.roundrobinlist;
 
 /**
- * Created by Marc on 03.01.2017.
+ * Created by DataSec on 03.01.2017.
  */
 public class LinkedRoundRobinList<E> implements RoundRobinList {
 
