@@ -1,6 +1,7 @@
 package de.datasec.pandora.slave.crawler;
 
 import de.datasec.pandora.shared.utils.UrlUtils;
+import de.datasec.pandora.shared.utils.Utils;
 import de.datasec.pandora.slave.Slave;
 import org.jsoup.Connection;
 import org.jsoup.HttpStatusException;
@@ -79,6 +80,7 @@ public class SlaveCrawlerThread implements Runnable {
                     checkAndAddKeyword(s);
                 }
 
+                Utils.cleanUp(con, doc);
             } catch (IOException e) {
                 // Ignore timeouts
                 if (e instanceof SocketTimeoutException) {
@@ -95,8 +97,7 @@ public class SlaveCrawlerThread implements Runnable {
 
             urlsToInsert.add(url);
 
-            System.out.println("URL: " + url);
-            keywords.forEach(keyword -> Slave.getCassandraManager().insert("indexes", new String[]{"id", "keyword", "urls"}, new Object[]{7, keyword, urlsToInsert}));
+            keywords.forEach(keyword -> Slave.getCassandraManager().insert("indexes", "keyword", "keyword", new String[]{"keyword", "urls"}, new Object[]{keyword, urlsToInsert}, 0));
 
             keywords.clear();
             urlsToInsert.clear();
@@ -129,6 +130,8 @@ public class SlaveCrawlerThread implements Runnable {
                 keywords.add(s);
             }
         }
+
+        Utils.cleanUp(urlParts, domain);
     }
 
     private void checkAndAddKeyword(String keyword) {

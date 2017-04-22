@@ -1,10 +1,14 @@
-package de.datasec.pandora.slave.database;
+package de.datasec.pandora.shared.database;
 
-import com.datastax.driver.core.*;
+import com.datastax.driver.core.BoundStatement;
+import com.datastax.driver.core.Cluster;
+import com.datastax.driver.core.PreparedStatement;
+import com.datastax.driver.core.Session;
 import com.datastax.driver.core.policies.DefaultRetryPolicy;
 import com.datastax.driver.core.policies.RoundRobinPolicy;
 import com.datastax.driver.core.policies.TokenAwarePolicy;
 import com.datastax.driver.core.querybuilder.QueryBuilder;
+import de.datasec.pandora.shared.utils.Utils;
 
 import java.util.Set;
 
@@ -36,22 +40,40 @@ public class CassandraManager {
         System.out.println("CONNECTED TO CASSANDRA ON: " + host);
     }
 
-    public void insert(String tableName, String[] columns, Object[] values) {
+    public void insert(String tableName, String columnForWhere, String columnForWhereMatch, String[] columns, Object[] values, int indexOfKey) {
         String[] insertValues = new String[values.length];
+        PreparedStatement statement = null;
+        BoundStatement boundStatement = null;
+
         for (int i = 0; i < values.length; i++) {
             insertValues[i] = "?";
         }
 
-        if (!contains(tableName, values[1])) {
-            PreparedStatement statement = session.prepare(
+        if (!contains(tableName, columnForWhere, columnForWhereMatch, values[indexOfKey])) {
+
+            statement = session.prepare(
                     String.format("INSERT INTO %s %s VALUES %s;", tableName, createString(columns), createString(insertValues)));
 
-            BoundStatement boundStatement = new BoundStatement(statement);
+
+            boundStatement = new BoundStatement(statement);
 
             session.execute(boundStatement.bind((Object[]) values));
         } else {
-            update("indexes", values[1].toString(), (Set<String>) values[2]);
+            if (tableName.equalsIgnoreCase("indexes")) {
+                update(tableName, values[0].toString(), (Set<String>) values[1]);
+            }
         }
+
+        Utils.cleanUp(insertValues, statement, boundStatement);
+    }
+
+    public boolean contains(String tableName, String column, String columnForMatch, Object key) {
+        return !(session.execute(QueryBuilder.select()
+                .column(column)
+                .from(keyspace, tableName)
+                .where(QueryBuilder.eq(columnForMatch, key)))
+                .isExhausted()
+        );
     }
 
     public void disconnect() {
@@ -59,11 +81,10 @@ public class CassandraManager {
     }
 
     private void update(String tableName, String keyword, Set<String> urls) {
-        Statement update = QueryBuilder.update(tableName)
+        session.execute(QueryBuilder.update(tableName)
                 .with(QueryBuilder.addAll("urls", urls))
-                .where((QueryBuilder.eq("keyword", keyword)));
-
-        session.execute(update);
+                .where((QueryBuilder.eq("keyword", keyword)))
+        );
     }
 
     private String createString(String[] strings) {
@@ -81,14 +102,5 @@ public class CassandraManager {
         result = String.format("%s)", result);
 
         return result;
-    }
-
-    private boolean contains(String tableName, Object key) {
-        Statement select = QueryBuilder.select()
-                .column("keyword")
-                .from("indexes", tableName)
-                .where(QueryBuilder.eq("keyword", key));
-
-        return !(session.execute(select).isExhausted());
     }
 }
