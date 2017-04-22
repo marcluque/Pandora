@@ -6,8 +6,7 @@ package de.datasec.pandora.slave;
 public class PandoraSlave {
 
     public static void main(String[] args) {
-        new Slave(args[0], Integer.parseInt(args[1])).connect();
-        //new Slave("localhost", 805).connect();
+        new Slave().connect();
         /*CassandraManager cassandraManager = new CassandraManager("127.0.0.1", "indexes");
 
         cassandraManager.connect(DefaultRetryPolicy.INSTANCE);

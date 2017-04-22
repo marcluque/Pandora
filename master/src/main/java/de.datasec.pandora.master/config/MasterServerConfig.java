@@ -11,9 +11,9 @@ import java.net.StandardSocketOptions;
 public class MasterServerConfig extends ServerConfig {
 
     public MasterServerConfig(Protocol protocol) {
-        host("0.0.0.0");
-        port(805);
-        workerThreads(2);
+        host("localhost");
+        port(8050);
+        workerThreads(4);
         backlog(200);
         option(StandardSocketOptions.TCP_NODELAY, true);
         protocol(protocol);
