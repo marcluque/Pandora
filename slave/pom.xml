@@ -41,7 +41,7 @@
                         <manifest>
                             <addClasspath>true</addClasspath>
                             <classpathPrefix>lib/</classpathPrefix>
-                            <mainClass>de.datasec.pandora.master.PandoraMaster</mainClass>
+                            <mainClass>de.datasec.pandora.slave.PandoraSlave</mainClass>
                         </manifest>
                     </archive>
                 </configuration>
