@@ -16,10 +16,6 @@ import de.jackwhite20.cascade.shared.session.SessionListener;
  */
 public class Master implements PacketListener {
 
-    private String host;
-
-    private int port;
-
     private String startUrl;
 
     private int urlsPerPacket;
@@ -28,9 +24,7 @@ public class Master implements PacketListener {
 
     private RoundRobinList<Session> sessions = new LinkedRoundRobinList<>();
 
-    public Master(String host, int port, String startUrl, int urlsPerPacket) {
-        this.host = host;
-        this.port = port;
+    public Master(String startUrl, int urlsPerPacket) {
         this.startUrl = startUrl;
         this.urlsPerPacket = urlsPerPacket;
     }

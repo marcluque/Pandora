@@ -6,7 +6,6 @@ package de.datasec.pandora.master;
 public class PandoraMaster {
 
     public static void main(String[] args) {
-        new Master(args[0], Integer.parseInt(args[1]), "https://www.youtube.de/", 10).start();
-        //new Master("localhost", 805, "https://www.youtube.de/", 10).start();
+        new Master("https://www.youtube.de/", 10).start();
     }
 }
