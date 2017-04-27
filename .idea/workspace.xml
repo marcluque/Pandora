@@ -2,15 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="fbdfddc6-83d4-4c83-a413-c72d93c9fda7" name="Default" comment="">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/master/target/pandora-master-0.0.1-SNAPSHOT.jar" afterPath="$PROJECT_DIR$/master/target/pandora-master-0.0.1-SNAPSHOT.jar" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/shared/target/pandora-shared-0.0.1-SNAPSHOT.jar" afterPath="$PROJECT_DIR$/shared/target/pandora-shared-0.0.1-SNAPSHOT.jar" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/slave/target/classes/de/datasec/pandora/slave/Slave$1.class" afterPath="$PROJECT_DIR$/slave/target/classes/de/datasec/pandora/slave/Slave$1.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/slave/target/classes/de/datasec/pandora/slave/Slave.class" afterPath="$PROJECT_DIR$/slave/target/classes/de/datasec/pandora/slave/Slave.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/slave/target/classes/de/datasec/pandora/slave/crawler/SlaveCrawler.class" afterPath="$PROJECT_DIR$/slave/target/classes/de/datasec/pandora/slave/crawler/SlaveCrawler.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/slave/target/classes/de/datasec/pandora/slave/crawler/SlaveCrawlerThread.class" afterPath="$PROJECT_DIR$/slave/target/classes/de/datasec/pandora/slave/crawler/SlaveCrawlerThread.class" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/slave/src/main/java/de/datasec/pandora/slave/Slave.java" afterPath="$PROJECT_DIR$/slave/src/main/java/de/datasec/pandora/slave/Slave.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/slave/src/main/java/de/datasec/pandora/slave/crawler/SlaveCrawler.java" afterPath="$PROJECT_DIR$/slave/src/main/java/de/datasec/pandora/slave/crawler/SlaveCrawler.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/slave/src/main/java/de/datasec/pandora/slave/crawler/SlaveCrawlerThread.java" afterPath="$PROJECT_DIR$/slave/src/main/java/de/datasec/pandora/slave/crawler/SlaveCrawlerThread.java" />
     </list>
     <ignored path="$PROJECT_DIR$/out/" />
@@ -52,7 +44,7 @@
         <entry file="file://$PROJECT_DIR$/master/src/main/java/de.datasec.pandora.master/roundrobinlist/LinkedRoundRobinList.java">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="210">
-              <caret line="13" column="38" lean-forward="true" selection-start-line="13" selection-start-column="38" selection-end-line="13" selection-end-column="38" />
+              <caret line="13" column="38" lean-forward="false" selection-start-line="13" selection-start-column="38" selection-end-line="13" selection-end-column="38" />
               <folding />
             </state>
           </provider>
@@ -94,8 +86,8 @@
       <file leaf-file-name="SlaveCrawlerThread.java" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/slave/src/main/java/de/datasec/pandora/slave/crawler/SlaveCrawlerThread.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="399">
-              <caret line="39" column="63" lean-forward="true" selection-start-line="39" selection-start-column="63" selection-end-line="39" selection-end-column="63" />
+            <state relative-caret-position="384">
+              <caret line="81" column="42" lean-forward="false" selection-start-line="81" selection-start-column="42" selection-end-line="81" selection-end-column="42" />
               <folding>
                 <element signature="method#evalUrl#0;class#SlaveCrawlerThread#0" expanded="false" />
                 <element signature="method#checkAndAddKeyword#0;class#SlaveCrawlerThread#0" expanded="false" />
@@ -109,7 +101,7 @@
         <entry file="file://$PROJECT_DIR$/master/src/main/java/de.datasec.pandora.master/listener/MasterBotListener.java">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="546">
-              <caret line="31" column="57" lean-forward="true" selection-start-line="31" selection-start-column="57" selection-end-line="31" selection-end-column="57" />
+              <caret line="31" column="57" lean-forward="false" selection-start-line="31" selection-start-column="57" selection-end-line="31" selection-end-column="57" />
               <folding />
             </state>
           </provider>
@@ -211,8 +203,8 @@
         <option value="$PROJECT_DIR$/slave/src/main/java/de/datasec/pandora/slave/crawler/SlaveCrawler.java" />
         <option value="$PROJECT_DIR$/slave/src/main/java/de/datasec/pandora/slave/Slave.java" />
         <option value="$PROJECT_DIR$/master/src/main/java/de.datasec.pandora.master/roundrobinlist/LinkedRoundRobinList.java" />
-        <option value="$PROJECT_DIR$/slave/src/main/java/de/datasec/pandora/slave/crawler/SlaveCrawlerThread.java" />
         <option value="$PROJECT_DIR$/master/src/main/java/de.datasec.pandora.master/listener/MasterBotListener.java" />
+        <option value="$PROJECT_DIR$/slave/src/main/java/de/datasec/pandora/slave/crawler/SlaveCrawlerThread.java" />
       </list>
     </option>
   </component>
@@ -1181,7 +1173,7 @@
       <window_info id="Palette&#9;" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.21970555" sideWeight="0.5021482" order="7" side_tool="true" content_ui="tabs" />
       <window_info id="Maven Projects" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.19871107" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
-      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="WINDOWED" visible="true" show_stripe_button="true" weight="0.3556059" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" x="243" y="214" width="1416" height="517" />
+      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="WINDOWED" visible="false" show_stripe_button="true" weight="0.3556059" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" x="243" y="214" width="1416" height="517" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Mongo Explorer" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32975295" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
@@ -1215,7 +1207,8 @@
     <MESSAGE value="Changed Manifest class." />
     <MESSAGE value="Added client config" />
     <MESSAGE value="Minor changes. Trying to find out why the BlockingQueue stops at a certain point" />
-    <option name="LAST_COMMIT_MESSAGE" value="Minor changes. Trying to find out why the BlockingQueue stops at a certain point" />
+    <MESSAGE value="Fixed problem with unknown stopping. Changed &quot;return&quot; into &quot;continue&quot; which won't stop the while loop." />
+    <option name="LAST_COMMIT_MESSAGE" value="Fixed problem with unknown stopping. Changed &quot;return&quot; into &quot;continue&quot; which won't stop the while loop." />
     <option name="OPTIMIZE_IMPORTS_BEFORE_PROJECT_COMMIT" value="true" />
   </component>
   <component name="XDebuggerManager">
@@ -1536,7 +1529,7 @@
     <entry file="file://$PROJECT_DIR$/master/src/main/java/de.datasec.pandora.master/roundrobinlist/LinkedRoundRobinList.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="210">
-          <caret line="13" column="38" lean-forward="true" selection-start-line="13" selection-start-column="38" selection-end-line="13" selection-end-column="38" />
+          <caret line="13" column="38" lean-forward="false" selection-start-line="13" selection-start-column="38" selection-end-line="13" selection-end-column="38" />
           <folding />
         </state>
       </provider>
@@ -1544,15 +1537,15 @@
     <entry file="file://$PROJECT_DIR$/master/src/main/java/de.datasec.pandora.master/listener/MasterBotListener.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="546">
-          <caret line="31" column="57" lean-forward="true" selection-start-line="31" selection-start-column="57" selection-end-line="31" selection-end-column="57" />
+          <caret line="31" column="57" lean-forward="false" selection-start-line="31" selection-start-column="57" selection-end-line="31" selection-end-column="57" />
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/slave/src/main/java/de/datasec/pandora/slave/crawler/SlaveCrawlerThread.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="399">
-          <caret line="39" column="63" lean-forward="true" selection-start-line="39" selection-start-column="63" selection-end-line="39" selection-end-column="63" />
+        <state relative-caret-position="384">
+          <caret line="81" column="42" lean-forward="false" selection-start-line="81" selection-start-column="42" selection-end-line="81" selection-end-column="42" />
           <folding>
             <element signature="method#evalUrl#0;class#SlaveCrawlerThread#0" expanded="false" />
             <element signature="method#checkAndAddKeyword#0;class#SlaveCrawlerThread#0" expanded="false" />

@@ -3,12 +3,10 @@ package de.datasec.pandora.slave.crawler;
 import de.datasec.pandora.shared.utils.UrlUtils;
 import de.datasec.pandora.slave.Slave;
 import org.jsoup.Connection;
-import org.jsoup.HttpStatusException;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 
 import java.io.IOException;
-import java.net.SocketTimeoutException;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.concurrent.BlockingQueue;
@@ -79,19 +77,7 @@ public class SlaveCrawlerThread implements Runnable {
                 for (String s : doc.select("meta[name=keywords]").attr("content").split("\\s+")) {
                     checkAndAddKeyword(s);
                 }
-            } catch (IOException e) {
-                // Ignore timeouts
-                if (e instanceof SocketTimeoutException) {
-                    continue;
-                }
-                // Print where the 404 occurred
-                else if (e instanceof HttpStatusException) {
-                    System.err.println("404 at: " + url);
-                    continue;
-                }
-
-                e.printStackTrace();
-            }
+            } catch (IOException ignore) {}
 
             urlsToInsert.add(url);
 
