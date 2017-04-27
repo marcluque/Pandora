@@ -2,8 +2,11 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="fbdfddc6-83d4-4c83-a413-c72d93c9fda7" name="Default" comment="">
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.gitignore" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/master/target/pandora-master-0.0.1-SNAPSHOT.jar" afterPath="$PROJECT_DIR$/master/target/pandora-master-0.0.1-SNAPSHOT.jar" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/shared/target/pandora-shared-0.0.1-SNAPSHOT.jar" afterPath="$PROJECT_DIR$/shared/target/pandora-shared-0.0.1-SNAPSHOT.jar" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/slave/target/classes/de/datasec/pandora/slave/crawler/SlaveCrawlerThread.class" afterPath="$PROJECT_DIR$/slave/target/classes/de/datasec/pandora/slave/crawler/SlaveCrawlerThread.class" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/slave/src/main/java/de/datasec/pandora/slave/crawler/SlaveCrawlerThread.java" afterPath="$PROJECT_DIR$/slave/src/main/java/de/datasec/pandora/slave/crawler/SlaveCrawlerThread.java" />
     </list>
     <ignored path="$PROJECT_DIR$/out/" />
     <ignored path="$PROJECT_DIR$/target/" />
@@ -83,16 +86,26 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="SlaveCrawlerThread.java" pinned="false" current-in-tab="true">
+      <file leaf-file-name="SlaveCrawlerThread.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/slave/src/main/java/de/datasec/pandora/slave/crawler/SlaveCrawlerThread.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="384">
-              <caret line="81" column="42" lean-forward="false" selection-start-line="81" selection-start-column="42" selection-end-line="81" selection-end-column="42" />
+            <state relative-caret-position="951">
+              <caret line="79" column="42" lean-forward="false" selection-start-line="79" selection-start-column="42" selection-end-line="79" selection-end-column="42" />
               <folding>
                 <element signature="method#evalUrl#0;class#SlaveCrawlerThread#0" expanded="false" />
                 <element signature="method#checkAndAddKeyword#0;class#SlaveCrawlerThread#0" expanded="false" />
                 <element signature="method#replaceUmlaut#0;class#SlaveCrawlerThread#0" expanded="false" />
               </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name=".gitignore" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/.gitignore">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="294">
+              <caret line="14" column="5" lean-forward="false" selection-start-line="14" selection-start-column="5" selection-end-line="14" selection-end-column="5" />
+              <folding />
             </state>
           </provider>
         </entry>
@@ -205,6 +218,7 @@
         <option value="$PROJECT_DIR$/master/src/main/java/de.datasec.pandora.master/roundrobinlist/LinkedRoundRobinList.java" />
         <option value="$PROJECT_DIR$/master/src/main/java/de.datasec.pandora.master/listener/MasterBotListener.java" />
         <option value="$PROJECT_DIR$/slave/src/main/java/de/datasec/pandora/slave/crawler/SlaveCrawlerThread.java" />
+        <option value="$PROJECT_DIR$/.gitignore" />
       </list>
     </option>
   </component>
@@ -1194,6 +1208,7 @@
   </component>
   <component name="UnknownFeatures">
     <option featureType="com.intellij.fileTypeFactory" implementationName="*.sh" />
+    <option featureType="com.intellij.fileTypeFactory" implementationName="*.gitignore" />
   </component>
   <component name="VcsContentAnnotationSettings">
     <option name="myLimit" value="2678400000" />
@@ -1208,7 +1223,8 @@
     <MESSAGE value="Added client config" />
     <MESSAGE value="Minor changes. Trying to find out why the BlockingQueue stops at a certain point" />
     <MESSAGE value="Fixed problem with unknown stopping. Changed &quot;return&quot; into &quot;continue&quot; which won't stop the while loop." />
-    <option name="LAST_COMMIT_MESSAGE" value="Fixed problem with unknown stopping. Changed &quot;return&quot; into &quot;continue&quot; which won't stop the while loop." />
+    <MESSAGE value="Updated exception printing for slaves" />
+    <option name="LAST_COMMIT_MESSAGE" value="Updated exception printing for slaves" />
     <option name="OPTIMIZE_IMPORTS_BEFORE_PROJECT_COMMIT" value="true" />
   </component>
   <component name="XDebuggerManager">
@@ -1218,13 +1234,6 @@
     <watches-manager />
   </component>
   <component name="editorHistoryManager">
-    <entry file="jar://C:/Program Files (x86)/Java SDK/jdk1.8.0_102/src.zip!/java/util/ArrayList.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="9240">
-          <caret line="457" column="17" lean-forward="false" selection-start-line="457" selection-start-column="17" selection-end-line="457" selection-end-column="17" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/master/src/main/java/de/datasec/pandora/master/packets/UrlPacket.java" />
     <entry file="file://$PROJECT_DIR$/master/src/main/java/de.datasec.pandora.master/PandoraProtocol.java" />
     <entry file="file://$PROJECT_DIR$/master/src/main/java/de.datasec.pandora.master/packets/UrlPacket.java" />
@@ -1544,13 +1553,21 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/slave/src/main/java/de/datasec/pandora/slave/crawler/SlaveCrawlerThread.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="384">
-          <caret line="81" column="42" lean-forward="false" selection-start-line="81" selection-start-column="42" selection-end-line="81" selection-end-column="42" />
+        <state relative-caret-position="951">
+          <caret line="79" column="42" lean-forward="false" selection-start-line="79" selection-start-column="42" selection-end-line="79" selection-end-column="42" />
           <folding>
             <element signature="method#evalUrl#0;class#SlaveCrawlerThread#0" expanded="false" />
             <element signature="method#checkAndAddKeyword#0;class#SlaveCrawlerThread#0" expanded="false" />
             <element signature="method#replaceUmlaut#0;class#SlaveCrawlerThread#0" expanded="false" />
           </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/.gitignore">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="294">
+          <caret line="14" column="5" lean-forward="false" selection-start-line="14" selection-start-column="5" selection-end-line="14" selection-end-column="5" />
+          <folding />
         </state>
       </provider>
     </entry>
