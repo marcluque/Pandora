@@ -12,6 +12,7 @@ import java.net.SocketTimeoutException;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.concurrent.BlockingQueue;
+import java.util.concurrent.TimeUnit;
 
 /**
  * Created by DataSec on 27.11.2016.
@@ -20,7 +21,7 @@ public class SlaveCrawlerThread implements Runnable {
 
     private static final String SANITIZER = "[^a-zA-Z0-9_ \\-_.\\u00C0-\\u00D6\\u00D8-\\u00F6\\u00F8-\\u00FF]";
 
-    private BlockingQueue<String> urls = SlaveCrawler.urls;
+    private BlockingQueue<String> urls;
 
     private Set<String> urlsToInsert = new HashSet<>();
 
@@ -28,15 +29,15 @@ public class SlaveCrawlerThread implements Runnable {
 
     private Set<String> keywords = new HashSet<>();
 
-    public SlaveCrawlerThread() {}
+    public SlaveCrawlerThread(BlockingQueue<String> urls) {
+        this.urls = urls;
+    }
 
     @Override
     public void run() {
         while (SlaveCrawler.CRAWLING) {
-            System.out.println("Size: " + urls.size());
             try {
-                url = urls.take();
-                System.out.println("URL: " + url);
+                url = urls.poll(10000L, TimeUnit.MILLISECONDS);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
@@ -49,7 +50,7 @@ public class SlaveCrawlerThread implements Runnable {
                 Document doc = con.get();
 
                 if (con.response().statusCode() != 200) {
-                    return;
+                    continue;
                 }
 
                 // Url
