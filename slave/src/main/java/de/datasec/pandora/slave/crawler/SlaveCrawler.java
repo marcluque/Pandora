@@ -11,17 +11,17 @@ import java.util.concurrent.LinkedBlockingQueue;
  */
 public class SlaveCrawler {
 
-    private BlockingQueue<String> urls = new LinkedBlockingQueue<>();
+    public static final boolean CRAWLING = true;
+
+    public static BlockingQueue<String> urls = new LinkedBlockingQueue<>();
 
     private ExecutorService executorService;
-
-    public static final boolean CRAWLING = true;
 
     public SlaveCrawler(int availableProcessorsMultiplicator) {
         executorService = Executors.newFixedThreadPool(Runtime.getRuntime().availableProcessors() * availableProcessorsMultiplicator);
 
         for (int i = 0; i < Runtime.getRuntime().availableProcessors() * availableProcessorsMultiplicator; i++) {
-            executorService.execute(new SlaveCrawlerThread(urls));
+            executorService.execute(new SlaveCrawlerThread());
         }
     }
 

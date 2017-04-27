@@ -8,7 +8,6 @@ import com.datastax.driver.core.policies.DefaultRetryPolicy;
 import com.datastax.driver.core.policies.RoundRobinPolicy;
 import com.datastax.driver.core.policies.TokenAwarePolicy;
 import com.datastax.driver.core.querybuilder.QueryBuilder;
-import de.datasec.pandora.shared.utils.Utils;
 
 import java.util.Set;
 
@@ -63,8 +62,6 @@ public class CassandraManager {
                 update(tableName, values[0].toString(), (Set<String>) values[1]);
             }
         }
-
-        Utils.cleanUp(insertValues, statement, boundStatement);
     }
 
     public boolean contains(String tableName, String column, String columnForMatch, Object key) {

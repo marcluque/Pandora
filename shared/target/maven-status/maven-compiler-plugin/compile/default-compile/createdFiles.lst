@@ -2,4 +2,3 @@ de\datasec\pandora\shared\database\CassandraManager.class
 de\datasec\pandora\shared\packets\UrlPacket.class
 de\datasec\pandora\shared\utils\UrlUtils.class
 de\datasec\pandora\shared\PandoraProtocol.class
-de\datasec\pandora\shared\utils\Utils.class

@@ -7,9 +7,12 @@ import de.datasec.pandora.slave.config.SlaveClientConfig;
 import de.datasec.pandora.slave.listener.SlavePacketListener;
 import de.jackwhite20.cascade.client.Client;
 import de.jackwhite20.cascade.client.ClientFactory;
+import de.jackwhite20.cascade.shared.pipeline.PipelineUtils;
 import de.jackwhite20.cascade.shared.protocol.listener.PacketListener;
 import de.jackwhite20.cascade.shared.session.Session;
 import de.jackwhite20.cascade.shared.session.SessionListener;
+
+import java.lang.reflect.Field;
 
 /**
  * Created by DataSec on 27.11.2016.
@@ -21,6 +24,15 @@ public class Slave implements PacketListener {
     private Client client;
 
     public Slave() {
+        try {
+            //TODO: Find the reason why epoll is not working with the slave
+            Field epoll = PipelineUtils.class.getDeclaredField("epoll");
+            epoll.setAccessible(true);
+            epoll.set(PipelineUtils.class, false);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
         cassandraManager = new CassandraManager("188.68.54.85", "pandora");
         cassandraManager.connect(DefaultRetryPolicy.INSTANCE);
     }
