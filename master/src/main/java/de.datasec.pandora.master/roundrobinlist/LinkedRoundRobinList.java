@@ -3,7 +3,7 @@ package de.datasec.pandora.master.roundrobinlist;
 /**
  * Created by DataSec on 03.01.2017.
  */
-public class LinkedRoundRobinList<E> implements RoundRobinList {
+public class LinkedRoundRobinList<E> implements RoundRobinList<E> {
 
     private Element start;
 
@@ -20,12 +20,12 @@ public class LinkedRoundRobinList<E> implements RoundRobinList {
     }
 
     @Override
-    public Object get() {
+    public E get() {
         Element e = start;
         while (e.next != null) {
             if (e.next.index == robinIndex) {
                 robinIndex = (robinIndex + 1) % size;
-                return e.next.node;
+                return (E) e.next.node;
             }
 
             e = e.next;
@@ -35,9 +35,9 @@ public class LinkedRoundRobinList<E> implements RoundRobinList {
     }
 
     @Override
-    public boolean add(Object o) {
+    public boolean add(E o) {
         if (o != null) {
-            Element e = new Element(o);
+            Element e = new Element<>(o);
             Element pointer = getLastElement();
             pointer.next = e;
             e.prev = pointer;
@@ -51,8 +51,8 @@ public class LinkedRoundRobinList<E> implements RoundRobinList {
     }
 
     @Override
-    public void remove(Object o) {
-        Element e = findObject((E) o);
+    public void remove(E o) {
+        Element e = findObject(o);
         if (e.next != null) {
             reduceIndex(e);
             e.prev.next = e.next;
@@ -68,8 +68,9 @@ public class LinkedRoundRobinList<E> implements RoundRobinList {
 
     private Element getLastElement() {
         Element e = start;
-        while (e.next != null)
+        while (e.next != null) {
             e = e.next;
+        }
 
         return e;
     }
@@ -84,8 +85,9 @@ public class LinkedRoundRobinList<E> implements RoundRobinList {
     private Element<E> findObject(E node) {
         Element e = start;
         while (e.next != null) {
-            if (e.next.node.equals(node))
+            if (e.next.node.equals(node)) {
                 return e.next;
+            }
 
             e = e.next;
         }

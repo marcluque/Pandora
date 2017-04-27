@@ -46,7 +46,6 @@
                         <manifest>
                             <addClasspath>true</addClasspath>
                             <classpathPrefix>lib/</classpathPrefix>
-                            <mainClass>de.datasec.hdlerarchiver.HDLArchiver</mainClass>
                         </manifest>
                     </archive>
                 </configuration>

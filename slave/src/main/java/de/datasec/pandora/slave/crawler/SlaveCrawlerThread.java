@@ -1,7 +1,6 @@
 package de.datasec.pandora.slave.crawler;
 
 import de.datasec.pandora.shared.utils.UrlUtils;
-import de.datasec.pandora.shared.utils.Utils;
 import de.datasec.pandora.slave.Slave;
 import org.jsoup.Connection;
 import org.jsoup.HttpStatusException;
@@ -19,27 +18,27 @@ import java.util.concurrent.BlockingQueue;
  */
 public class SlaveCrawlerThread implements Runnable {
 
-    private BlockingQueue<String> urls;
+    private static final String SANITIZER = "[^a-zA-Z0-9_ \\-_.\\u00C0-\\u00D6\\u00D8-\\u00F6\\u00F8-\\u00FF]";
+
+    private BlockingQueue<String> urls = SlaveCrawler.urls;
 
     private Set<String> urlsToInsert = new HashSet<>();
-
-    private static final String SANITIZER = "[^a-zA-Z0-9_ \\-_.\\u00C0-\\u00D6\\u00D8-\\u00F6\\u00F8-\\u00FF]";
 
     private String url;
 
     private Set<String> keywords = new HashSet<>();
 
-    public SlaveCrawlerThread(BlockingQueue<String> urls) {
-        this.urls = urls;
-    }
+    public SlaveCrawlerThread() {}
 
     @Override
     public void run() {
         while (SlaveCrawler.CRAWLING) {
+            System.out.println("Size: " + urls.size());
             try {
                 url = urls.take();
-            } catch (InterruptedException ie) {
-                ie.printStackTrace();
+                System.out.println("URL: " + url);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
             }
 
             try {
@@ -79,14 +78,12 @@ public class SlaveCrawlerThread implements Runnable {
                 for (String s : doc.select("meta[name=keywords]").attr("content").split("\\s+")) {
                     checkAndAddKeyword(s);
                 }
-
-                Utils.cleanUp(con, doc);
             } catch (IOException e) {
                 // Ignore timeouts
                 if (e instanceof SocketTimeoutException) {
                     continue;
                 }
-                // Print where the 404 occured
+                // Print where the 404 occurred
                 else if (e instanceof HttpStatusException) {
                     System.err.println("404 at: " + url);
                     continue;
@@ -97,7 +94,7 @@ public class SlaveCrawlerThread implements Runnable {
 
             urlsToInsert.add(url);
 
-            keywords.forEach(keyword -> Slave.getCassandraManager().insert("indexes", "keyword", "keyword", new String[]{"keyword", "urls"}, new Object[]{keyword, urlsToInsert}, 0));
+            keywords.forEach(keyword -> Slave.getCassandraManager().insert("indexes", "keyword", "keyword", new String[] {"keyword", "urls"}, new Object[] {keyword, urlsToInsert}, 0));
 
             keywords.clear();
             urlsToInsert.clear();
@@ -130,8 +127,6 @@ public class SlaveCrawlerThread implements Runnable {
                 keywords.add(s);
             }
         }
-
-        Utils.cleanUp(urlParts, domain);
     }
 
     private void checkAndAddKeyword(String keyword) {

@@ -19,10 +19,6 @@ public class SlavePacketListener implements PacketListener {
 
     @PacketHandler
     public void onUrlsPacket(Session session, UrlPacket urlPacket) {
-
-        //TODO: DELETE OR NOT?
-        //System.out.println("Received from Server: " + urlPacket);
-
         slaveCrawler.add(urlPacket.getLinksToCrawl());
     }
 }
