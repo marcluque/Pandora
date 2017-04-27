@@ -38,7 +38,7 @@ public class Slave implements PacketListener {
     }
 
     public void connect() {
-        client = ClientFactory.create(new SlaveClientConfig(new PandoraProtocol(new SlavePacketListener(2))));
+        client = ClientFactory.create(new SlaveClientConfig(new PandoraProtocol(new SlavePacketListener(3))));
         client.addSessionListener(new SessionListener() {
 
             @Override

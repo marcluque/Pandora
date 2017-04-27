@@ -13,7 +13,7 @@ public class SlaveCrawler {
 
     public static final boolean CRAWLING = true;
 
-    public static BlockingQueue<String> urls = new LinkedBlockingQueue<>();
+    public BlockingQueue<String> urls = new LinkedBlockingQueue<>();
 
     private ExecutorService executorService;
 
@@ -21,7 +21,7 @@ public class SlaveCrawler {
         executorService = Executors.newFixedThreadPool(Runtime.getRuntime().availableProcessors() * availableProcessorsMultiplicator);
 
         for (int i = 0; i < Runtime.getRuntime().availableProcessors() * availableProcessorsMultiplicator; i++) {
-            executorService.execute(new SlaveCrawlerThread());
+            executorService.execute(new SlaveCrawlerThread(urls));
         }
     }
 
