@@ -13,7 +13,7 @@ public class SlaveCrawler {
 
     public static final boolean CRAWLING = true;
 
-    public BlockingQueue<String> urls = new LinkedBlockingQueue<>();
+    private BlockingQueue<String> urls = new LinkedBlockingQueue<>();
 
     private ExecutorService executorService;
 
