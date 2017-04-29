@@ -1,10 +1,12 @@
 package de.datasec.pandora.master;
 
+import com.datastax.driver.core.policies.DefaultRetryPolicy;
 import de.datasec.pandora.master.bot.MasterBot;
 import de.datasec.pandora.master.config.MasterServerConfig;
 import de.datasec.pandora.master.roundrobinlist.LinkedRoundRobinList;
 import de.datasec.pandora.master.roundrobinlist.RoundRobinList;
 import de.datasec.pandora.shared.PandoraProtocol;
+import de.datasec.pandora.shared.database.CassandraManager;
 import de.jackwhite20.cascade.server.Server;
 import de.jackwhite20.cascade.server.ServerFactory;
 import de.jackwhite20.cascade.shared.protocol.listener.PacketListener;
@@ -15,6 +17,8 @@ import de.jackwhite20.cascade.shared.session.SessionListener;
  * Created by DataSec on 27.11.2016.
  */
 public class Master implements PacketListener {
+
+    private static CassandraManager cassandraManager;
 
     private String startUrl;
 
@@ -27,6 +31,10 @@ public class Master implements PacketListener {
     public Master(String startUrl, int urlsPerPacket) {
         this.startUrl = startUrl;
         this.urlsPerPacket = urlsPerPacket;
+
+        // Cassandra
+        cassandraManager = new CassandraManager("188.68.54.85", "pandora");
+        cassandraManager.connect(DefaultRetryPolicy.INSTANCE);
     }
 
     public void start() {
@@ -59,6 +67,11 @@ public class Master implements PacketListener {
         });
 
         server.start();
-        new MasterBot(server, sessions, startUrl, urlsPerPacket).crawl();
+        new MasterBot(sessions, startUrl, urlsPerPacket, 3);
+        server.stop();
+    }
+
+    public static CassandraManager getCassandraManager() {
+        return cassandraManager;
     }
 }
