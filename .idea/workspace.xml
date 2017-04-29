@@ -1,10 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="fbdfddc6-83d4-4c83-a413-c72d93c9fda7" name="Default" comment="Big update. Changed the master hierarchy, so there is a boss and a worker that is linked to threads, created by an executor service. This allows a much faster web site fetching.">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/master/src/main/java/de.datasec.pandora.master/bot/MasterBotWorker.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/master/src/main/java/de.datasec.pandora.master/bot/MasterBotWorkerThread.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/master/src/main/java/de.datasec.pandora.master/bot/impl/MasterBotBoss.java" />
+    <list default="true" id="fbdfddc6-83d4-4c83-a413-c72d93c9fda7" name="Default" comment="">
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/master/target/classes/de/datasec/pandora/master/Master$1.class" afterPath="$PROJECT_DIR$/master/target/classes/de/datasec/pandora/master/Master$1.class" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/master/target/classes/de/datasec/pandora/master/Master.class" afterPath="$PROJECT_DIR$/master/target/classes/de/datasec/pandora/master/Master.class" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/master/target/classes/de/datasec/pandora/master/bot/MasterBot.class" afterPath="$PROJECT_DIR$/master/target/classes/de/datasec/pandora/master/bot/MasterBot.class" />
@@ -13,11 +10,9 @@
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/slave/target/classes/de/datasec/pandora/slave/crawler/SlaveCrawler.class" afterPath="$PROJECT_DIR$/slave/target/classes/de/datasec/pandora/slave/crawler/SlaveCrawler.class" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/slave/target/classes/de/datasec/pandora/slave/crawler/SlaveCrawlerThread.class" afterPath="$PROJECT_DIR$/slave/target/classes/de/datasec/pandora/slave/crawler/SlaveCrawlerThread.class" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/master/src/main/java/de.datasec.pandora.master/Master.java" afterPath="$PROJECT_DIR$/master/src/main/java/de.datasec.pandora.master/Master.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/master/src/main/java/de.datasec.pandora.master/bot/MasterBot.java" afterPath="$PROJECT_DIR$/master/src/main/java/de.datasec.pandora.master/bot/MasterBot.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/master/target/maven-status/maven-compiler-plugin/compile/default-compile/createdFiles.lst" afterPath="$PROJECT_DIR$/master/target/maven-status/maven-compiler-plugin/compile/default-compile/createdFiles.lst" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/master/target/maven-status/maven-compiler-plugin/compile/default-compile/inputFiles.lst" afterPath="$PROJECT_DIR$/master/target/maven-status/maven-compiler-plugin/compile/default-compile/inputFiles.lst" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/slave/src/main/java/de/datasec/pandora/slave/crawler/SlaveCrawler.java" afterPath="$PROJECT_DIR$/slave/src/main/java/de/datasec/pandora/slave/crawler/SlaveCrawler.java" />
     </list>
     <ignored path="$PROJECT_DIR$/out/" />
     <ignored path="$PROJECT_DIR$/target/" />
@@ -46,7 +41,8 @@
             <state relative-caret-position="588">
               <caret line="40" column="105" lean-forward="false" selection-start-line="40" selection-start-column="105" selection-end-line="40" selection-end-column="105" />
               <folding>
-                <element signature="method#onDisconnected#0;class#1554:2161" expanded="false" />
+                <element signature="e#1650#1651#0" expanded="true" />
+                <element signature="e#1739#1740#0" expanded="true" />
                 <element signature="method#onStarted#0;class#1554:2161" expanded="false" />
                 <element signature="method#onStopped#0;class#1554:2161" expanded="false" />
               </folding>
@@ -57,27 +53,27 @@
       <file leaf-file-name="Master.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/master/src/main/java/de.datasec.pandora.master/Master.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="570">
-              <caret line="69" column="58" lean-forward="false" selection-start-line="69" selection-start-column="58" selection-end-line="69" selection-end-column="58" />
+            <state relative-caret-position="759">
+              <caret line="69" column="60" lean-forward="true" selection-start-line="69" selection-start-column="60" selection-end-line="69" selection-end-column="60" />
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="MasterBot.java" pinned="false" current-in-tab="false">
+      <file leaf-file-name="MasterBot.java" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/master/src/main/java/de.datasec.pandora.master/bot/MasterBot.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="315">
-              <caret line="23" column="44" lean-forward="true" selection-start-line="23" selection-start-column="44" selection-end-line="23" selection-end-column="44" />
+            <state relative-caret-position="231">
+              <caret line="19" column="44" lean-forward="true" selection-start-line="19" selection-start-column="44" selection-end-line="19" selection-end-column="44" />
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="MasterBotBoss.java" pinned="false" current-in-tab="true">
+      <file leaf-file-name="MasterBotBoss.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/master/src/main/java/de.datasec.pandora.master/bot/impl/MasterBotBoss.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="1602">
+            <state relative-caret-position="2373">
               <caret line="124" column="32" lean-forward="false" selection-start-line="124" selection-start-column="32" selection-end-line="124" selection-end-column="32" />
               <folding />
             </state>
@@ -214,8 +210,8 @@
         <option value="$PROJECT_DIR$/master/src/main/java/de.datasec.pandora.master/Master.java" />
         <option value="$PROJECT_DIR$/master/src/main/java/de.datasec.pandora.master/bot/impl/MasterBot.java" />
         <option value="$PROJECT_DIR$/master/src/main/java/de.datasec.pandora.master/bot/MasterBotWorkerThread.java" />
-        <option value="$PROJECT_DIR$/master/src/main/java/de.datasec.pandora.master/bot/MasterBot.java" />
         <option value="$PROJECT_DIR$/master/src/main/java/de.datasec.pandora.master/bot/impl/MasterBotBoss.java" />
+        <option value="$PROJECT_DIR$/master/src/main/java/de.datasec.pandora.master/bot/MasterBot.java" />
       </list>
     </option>
   </component>
@@ -1260,7 +1256,8 @@
     <MESSAGE value="Fixed problem with unknown stopping. Changed &quot;return&quot; into &quot;continue&quot; which won't stop the while loop." />
     <MESSAGE value="Updated exception printing for slaves" />
     <MESSAGE value="Added gitignore" />
-    <option name="LAST_COMMIT_MESSAGE" value="Added gitignore" />
+    <MESSAGE value="Big update. Changed the master hierarchy, so there is a boss and a worker that is linked to threads, created by an executor service. This allows a much faster web site fetching." />
+    <option name="LAST_COMMIT_MESSAGE" value="Big update. Changed the master hierarchy, so there is a boss and a worker that is linked to threads, created by an executor service. This allows a much faster web site fetching." />
     <option name="OPTIMIZE_IMPORTS_BEFORE_PROJECT_COMMIT" value="true" />
   </component>
   <component name="XDebuggerManager">
@@ -1530,18 +1527,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/slave/src/main/java/de/datasec/pandora/slave/Slave.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="588">
-          <caret line="40" column="105" lean-forward="false" selection-start-line="40" selection-start-column="105" selection-end-line="40" selection-end-column="105" />
-          <folding>
-            <element signature="method#onDisconnected#0;class#1554:2161" expanded="false" />
-            <element signature="method#onStarted#0;class#1554:2161" expanded="false" />
-            <element signature="method#onStopped#0;class#1554:2161" expanded="false" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/slave/src/main/java/de/datasec/pandora/slave/crawler/SlaveCrawler.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="189">
@@ -1589,22 +1574,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/master/src/main/java/de.datasec.pandora.master/Master.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="570">
-          <caret line="69" column="58" lean-forward="false" selection-start-line="69" selection-start-column="58" selection-end-line="69" selection-end-column="58" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/master/src/main/java/de.datasec.pandora.master/bot/MasterBot.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="315">
-          <caret line="23" column="44" lean-forward="true" selection-start-line="23" selection-start-column="44" selection-end-line="23" selection-end-column="44" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/master/src/main/java/de.datasec.pandora.master/bot/MasterBotWorkerThread.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="42">
@@ -1613,6 +1582,14 @@
             <element signature="e#259#260#0" expanded="true" />
             <element signature="e#288#289#0" expanded="true" />
           </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/master/src/main/java/de.datasec.pandora.master/bot/impl/MasterBotBoss.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="2373">
+          <caret line="124" column="32" lean-forward="false" selection-start-line="124" selection-start-column="32" selection-end-line="124" selection-end-column="32" />
+          <folding />
         </state>
       </provider>
     </entry>
@@ -1627,10 +1604,31 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/master/src/main/java/de.datasec.pandora.master/bot/impl/MasterBotBoss.java">
+    <entry file="file://$PROJECT_DIR$/master/src/main/java/de.datasec.pandora.master/Master.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1602">
-          <caret line="124" column="32" lean-forward="false" selection-start-line="124" selection-start-column="32" selection-end-line="124" selection-end-column="32" />
+        <state relative-caret-position="759">
+          <caret line="69" column="60" lean-forward="true" selection-start-line="69" selection-start-column="60" selection-end-line="69" selection-end-column="60" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/slave/src/main/java/de/datasec/pandora/slave/Slave.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="588">
+          <caret line="40" column="105" lean-forward="false" selection-start-line="40" selection-start-column="105" selection-end-line="40" selection-end-column="105" />
+          <folding>
+            <element signature="e#1650#1651#0" expanded="true" />
+            <element signature="e#1739#1740#0" expanded="true" />
+            <element signature="method#onStarted#0;class#1554:2161" expanded="false" />
+            <element signature="method#onStopped#0;class#1554:2161" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/master/src/main/java/de.datasec.pandora.master/bot/MasterBot.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="231">
+          <caret line="19" column="44" lean-forward="true" selection-start-line="19" selection-start-column="44" selection-end-line="19" selection-end-column="44" />
           <folding />
         </state>
       </provider>
