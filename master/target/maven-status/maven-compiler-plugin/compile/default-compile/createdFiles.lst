@@ -5,9 +5,9 @@ de\datasec\pandora\master\listener\MasterBotListener.class
 de\datasec\pandora\master\Master$1.class
 de\datasec\pandora\master\Master.class
 de\datasec\pandora\master\bot\MasterBot.class
+de\datasec\pandora\master\bot\MasterBotWorker.class
 de\datasec\pandora\master\PandoraMaster.class
+de\datasec\pandora\master\bot\impl\MasterBotBoss.class
 de\datasec\pandora\master\listener\BotListener.class
+de\datasec\pandora\master\bot\MasterBotWorkerThread.class
 de\datasec\pandora\master\roundrobinlist\Element.class
-de\datasec\pandora\master\bot\MasterBotBoss.class
-de\datasec\pandora\master\bot\impl\MasterBotThread.class
-de\datasec\pandora\master\bot\impl\MasterBotWorker.class

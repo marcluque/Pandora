@@ -59,11 +59,11 @@ public class MasterBotBoss {
     }
 
     protected void crawl() {
-        while ((currentUrl = urlsToVisit.poll()) != null) {
+        while (true) {
             try {
-                Connection con = Jsoup.connect(currentUrl)
-                        .userAgent(UrlUtils.USER_AGENT)
-                        .timeout(4000);
+                currentUrl = urlsToVisit.take();
+
+                Connection con = Jsoup.connect(currentUrl).userAgent(UrlUtils.USER_AGENT).timeout(4000);
                 Document doc = con.get();
 
                 if (con.response().statusCode() != 200) {
@@ -78,7 +78,7 @@ public class MasterBotBoss {
                         repairAndAddUrl(url);
                     }
                 });
-            } catch (IOException ignore) {}
+            } catch (IOException | InterruptedException ignore) {}
         }
     }
 
@@ -119,7 +119,7 @@ public class MasterBotBoss {
     private void addUrl(String url) {
         if (!cassandraManager.contains(tableName, column, column, url)) {
             urlsToVisit.offer(url);
-            cassandraManager.insert(tableName, column, column, new String[]{column}, new Object[]{url}, 0);
+            cassandraManager.insert(tableName, column, column, new String[]{column}, new Object[]{url});
             masterBotListener.onUrl(url);
 
             // Create url backup
