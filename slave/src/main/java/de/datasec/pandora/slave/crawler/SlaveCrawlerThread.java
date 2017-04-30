@@ -23,9 +23,9 @@ public class SlaveCrawlerThread implements Runnable {
 
     private Set<String> urlsToInsert = new HashSet<>();
 
-    private String url;
-
     private Set<String> keywords = new HashSet<>();
+
+    private String url;
 
     public SlaveCrawlerThread(BlockingQueue<String> urls) {
         this.urls = urls;
@@ -36,15 +36,8 @@ public class SlaveCrawlerThread implements Runnable {
         while (SlaveCrawler.CRAWLING) {
             try {
                 url = urls.poll(10000L, TimeUnit.MILLISECONDS);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
 
-            try {
-                Connection con = Jsoup.connect(url)
-                        .userAgent(UrlUtils.USER_AGENT)
-                        .ignoreHttpErrors(true)
-                        .timeout(4000);
+                Connection con = Jsoup.connect(url).userAgent(UrlUtils.USER_AGENT).ignoreHttpErrors(true).timeout(4000);
                 Document doc = con.get();
 
                 if (con.response().statusCode() != 200) {
@@ -77,11 +70,11 @@ public class SlaveCrawlerThread implements Runnable {
                 for (String s : doc.select("meta[name=keywords]").attr("content").split("\\s+")) {
                     checkAndAddKeyword(s);
                 }
-            } catch (IOException ignore) {}
+            } catch (IOException | InterruptedException ignore) {}
 
             urlsToInsert.add(url);
 
-            keywords.forEach(keyword -> Slave.getCassandraManager().insert("indexes", "keyword", "keyword", new String[] {"keyword", "urls"}, new Object[] {keyword, urlsToInsert}, 0));
+            keywords.forEach(keyword -> Slave.getCassandraManager().insert("indexes", "keyword", "keyword", new String[] {"keyword", "urls"}, new Object[] {keyword, urlsToInsert}));
 
             keywords.clear();
             urlsToInsert.clear();

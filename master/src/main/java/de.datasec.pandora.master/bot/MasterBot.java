@@ -15,23 +15,19 @@ import java.util.concurrent.LinkedBlockingQueue;
  */
 public class MasterBot {
 
-    private MasterBotListener masterBotListener;
-
-    public BlockingQueue<String> urlsToVisit = new LinkedBlockingQueue<>();
-
-    private UrlValidator urlValidator = new UrlValidator();
+    private BlockingQueue<String> urlsToVisit = new LinkedBlockingQueue<>();
 
     private ExecutorService executorService;
 
     public MasterBot(RoundRobinList<Session> sessions, String startUrl, int urlsPerPacket, int availableProcessorsMultiplicator) {
-        masterBotListener = new MasterBotListener(sessions, urlsPerPacket);
-
         // MasterBotWorker
-        new MasterBotWorker(masterBotListener, startUrl, urlsToVisit, urlValidator).crawl();
+        new MasterBotWorker(new MasterBotListener(sessions, urlsPerPacket), startUrl, urlsToVisit, new UrlValidator()).crawl();
 
-        executorService = Executors.newFixedThreadPool(Runtime.getRuntime().availableProcessors() * availableProcessorsMultiplicator);
+        int nThreads = Runtime.getRuntime().availableProcessors() * availableProcessorsMultiplicator;
 
-        for (int i = 0; i < Runtime.getRuntime().availableProcessors() * availableProcessorsMultiplicator; i++) {
+        executorService = Executors.newFixedThreadPool(nThreads);
+
+        for (int i = 0; i < nThreads; i++) {
             executorService.execute(new MasterBotWorkerThread());
         }
     }

@@ -39,22 +39,18 @@ public class CassandraManager {
         System.out.println("CONNECTED TO CASSANDRA ON: " + host);
     }
 
-    public void insert(String tableName, String columnForWhere, String columnForWhereMatch, String[] columns, Object[] values, int indexOfKey) {
+    public void insert(String tableName, String columnForWhere, String columnForWhereMatch, String[] columns, Object[] values) {
         String[] insertValues = new String[values.length];
-        PreparedStatement statement = null;
-        BoundStatement boundStatement = null;
 
         for (int i = 0; i < values.length; i++) {
             insertValues[i] = "?";
         }
 
-        if (!contains(tableName, columnForWhere, columnForWhereMatch, values[indexOfKey])) {
-
-            statement = session.prepare(
+        if (!contains(tableName, columnForWhere, columnForWhereMatch, values[0])) {
+            PreparedStatement statement = session.prepare(
                     String.format("INSERT INTO %s %s VALUES %s;", tableName, createString(columns), createString(insertValues)));
 
-
-            boundStatement = new BoundStatement(statement);
+            BoundStatement boundStatement = new BoundStatement(statement);
 
             session.execute(boundStatement.bind((Object[]) values));
         } else {
@@ -85,7 +81,6 @@ public class CassandraManager {
     }
 
     private String createString(String[] strings) {
-
         String result = "(";
 
         for (int i = 0; i < strings.length; i++) {

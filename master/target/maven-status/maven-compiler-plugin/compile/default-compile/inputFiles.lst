@@ -2,11 +2,11 @@ C:\Dokumente\Programmierung\Java\pandora\master\src\main\java\de.datasec.pandora
 C:\Dokumente\Programmierung\Java\pandora\master\src\main\java\de.datasec.pandora.master\Master.java
 C:\Dokumente\Programmierung\Java\pandora\master\src\main\java\de.datasec.pandora.master\listener\MasterBotListener.java
 C:\Dokumente\Programmierung\Java\pandora\master\src\main\java\de.datasec.pandora.master\roundrobinlist\RoundRobinList.java
+C:\Dokumente\Programmierung\Java\pandora\master\src\main\java\de.datasec.pandora.master\bot\impl\MasterBotBoss.java
 C:\Dokumente\Programmierung\Java\pandora\master\src\main\java\de.datasec.pandora.master\PandoraMaster.java
 C:\Dokumente\Programmierung\Java\pandora\master\src\main\java\de.datasec.pandora.master\roundrobinlist\Element.java
-C:\Dokumente\Programmierung\Java\pandora\master\src\main\java\de.datasec.pandora.master\bot\MasterBotBoss.java
 C:\Dokumente\Programmierung\Java\pandora\master\src\main\java\de.datasec.pandora.master\bot\MasterBot.java
 C:\Dokumente\Programmierung\Java\pandora\master\src\main\java\de.datasec.pandora.master\roundrobinlist\LinkedRoundRobinList.java
-C:\Dokumente\Programmierung\Java\pandora\master\src\main\java\de.datasec.pandora.master\bot\impl\MasterBotThread.java
-C:\Dokumente\Programmierung\Java\pandora\master\src\main\java\de.datasec.pandora.master\bot\impl\MasterBotWorker.java
+C:\Dokumente\Programmierung\Java\pandora\master\src\main\java\de.datasec.pandora.master\bot\MasterBotWorker.java
+C:\Dokumente\Programmierung\Java\pandora\master\src\main\java\de.datasec.pandora.master\bot\MasterBotWorkerThread.java
 C:\Dokumente\Programmierung\Java\pandora\master\src\main\java\de.datasec.pandora.master\listener\BotListener.java
