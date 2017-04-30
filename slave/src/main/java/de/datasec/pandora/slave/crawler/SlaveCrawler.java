@@ -18,9 +18,11 @@ public class SlaveCrawler {
     private ExecutorService executorService;
 
     public SlaveCrawler(int availableProcessorsMultiplicator) {
-        executorService = Executors.newFixedThreadPool(Runtime.getRuntime().availableProcessors() * availableProcessorsMultiplicator);
+        int nThreads = Runtime.getRuntime().availableProcessors() * availableProcessorsMultiplicator;
 
-        for (int i = 0; i < Runtime.getRuntime().availableProcessors() * availableProcessorsMultiplicator; i++) {
+        executorService = Executors.newFixedThreadPool(nThreads);
+
+        for (int i = 0; i < nThreads; i++) {
             executorService.execute(new SlaveCrawlerThread(urls));
         }
     }
