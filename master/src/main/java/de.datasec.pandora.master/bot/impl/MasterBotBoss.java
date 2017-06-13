@@ -61,6 +61,7 @@ public class MasterBotBoss {
     protected void crawl() {
         while (true) {
             try {
+                System.out.println("NULL?: " + urlsToVisit == null);
                 currentUrl = urlsToVisit.take();
 
                 Connection con = Jsoup.connect(currentUrl).userAgent(UrlUtils.USER_AGENT).timeout(4000);
