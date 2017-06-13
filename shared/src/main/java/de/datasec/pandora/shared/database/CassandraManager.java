@@ -91,8 +91,6 @@ public class CassandraManager {
             }
         }
 
-        result = String.format("%s)", result);
-
-        return result;
+        return String.format("%s)", result);
     }
 }
