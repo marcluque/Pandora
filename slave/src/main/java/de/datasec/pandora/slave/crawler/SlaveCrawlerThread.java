@@ -37,6 +37,10 @@ public class SlaveCrawlerThread implements Runnable {
             try {
                 url = urls.poll(10000L, TimeUnit.MILLISECONDS);
 
+                if (url == null) {
+                    continue;
+                }
+
                 Connection con = Jsoup.connect(url).userAgent(UrlUtils.USER_AGENT).ignoreHttpErrors(true).timeout(4000);
                 Document doc = con.get();
 
@@ -70,7 +74,7 @@ public class SlaveCrawlerThread implements Runnable {
                 for (String s : doc.select("meta[name=keywords]").attr("content").split("\\s+")) {
                     checkAndAddKeyword(s);
                 }
-            } catch (IOException | InterruptedException ignore) {}
+            } catch (IOException | IllegalArgumentException | InterruptedException ignore) {}
 
             urlsToInsert.add(url);
 

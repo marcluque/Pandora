@@ -14,4 +14,9 @@ public class Element<E> {
     public Element(E node) {
         this.node = node;
     }
+
+    @Override
+    public String toString() {
+        return node.toString();
+    }
 }
