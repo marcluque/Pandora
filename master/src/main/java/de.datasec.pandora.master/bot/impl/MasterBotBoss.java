@@ -61,7 +61,7 @@ public class MasterBotBoss {
     protected void crawl() {
         while (true) {
             try {
-                System.out.println("NULL?: " + urlsToVisit == null);
+                //System.out.println("NULL?: " + urlsToVisit == null);
                 currentUrl = urlsToVisit.take();
 
                 Connection con = Jsoup.connect(currentUrl).userAgent(UrlUtils.USER_AGENT).timeout(4000);
@@ -73,7 +73,7 @@ public class MasterBotBoss {
 
                 doc.getElementsByTag("a").forEach(tag -> {
                     String url = tag.attr("href");
-                    if (urlValidator.isValid(url)) {
+                    if (urlValidator.isValid(url) && url.length() > 0) {
                         addUrl(url);
                     } else if (!(url.length() > 250)) {
                         repairAndAddUrl(url);

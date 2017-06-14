@@ -53,16 +53,20 @@ public class LinkedRoundRobinList<E> implements RoundRobinList<E> {
     @Override
     public void remove(E o) {
         Element e = findObject(o);
-        if (e.next != null) {
-            reduceIndex(e);
-            e.prev.next = e.next;
-            e.next.prev = e.prev;
-            size--;
-            index--;
-        } else {
-            e.prev.next = e.next;
-            size--;
-            index--;
+        if (e != null) {
+            if (e.next != null) {
+                reduceIndex(e);
+                e.prev.next = e.next;
+                e.next.prev = e.prev;
+                size--;
+                index--;
+            } else {
+                e.prev.next = null;
+                size--;
+                index--;
+            }
+
+            robinIndex = (size != 0) ? (robinIndex + 1) % size : 0;
         }
     }
 
@@ -82,7 +86,7 @@ public class LinkedRoundRobinList<E> implements RoundRobinList<E> {
         }
     }
 
-    private Element<E> findObject(E node) {
+    private Element findObject(E node) {
         Element e = start;
         while (e.next != null) {
             if (e.next.node.equals(node)) {
