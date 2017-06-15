@@ -64,6 +64,10 @@ public class MasterBotBoss {
                 //System.out.println("NULL?: " + urlsToVisit == null);
                 currentUrl = urlsToVisit.take();
 
+                if (currentUrl == null) {
+                    continue;
+                }
+
                 Connection con = Jsoup.connect(currentUrl).userAgent(UrlUtils.USER_AGENT).timeout(4000);
                 Document doc = con.get();
 
