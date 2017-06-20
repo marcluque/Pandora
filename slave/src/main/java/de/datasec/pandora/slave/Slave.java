@@ -43,7 +43,7 @@ public class Slave implements PacketListener {
 
             @Override
             public void onConnected(Session session) {
-                System.out.println("Connected to Pandora master server!");
+                System.out.println("Connected to Pandora master server! \nFetching..");
             }
 
             @Override

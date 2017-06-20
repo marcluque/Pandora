@@ -61,8 +61,9 @@ public class MasterBotBoss {
     protected void crawl() {
         while (true) {
             try {
-                //System.out.println("NULL?: " + urlsToVisit == null);
+                System.out.printf("NULL?: %s RESULT: %d%n", urlsToVisit == null, urlsToVisit.size());
                 currentUrl = urlsToVisit.take();
+                System.out.printf("NULL?: %s RESULT: %s%n", currentUrl == null, currentUrl);
 
                 if (currentUrl == null) {
                     continue;
