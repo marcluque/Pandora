@@ -98,10 +98,9 @@ public class SlaveCrawlerThread implements Runnable {
             if (s.contains("/")) {
                 if (!s.startsWith("http")) {
                     for (int i = 1; i < s.split("/").length; i++) {
-                        if (s.split("[^a-zA-Z0-9_]")[i] != null) {
-                            if (s.split("[^a-zA-Z0-9_]")[i].length() > 0) {
-                                keywords.add(s.split("[^a-zA-Z0-9_]")[i]);
-                            }
+                        String keyword = s.split("[^a-zA-Z0-9_]")[i];
+                        if (!keywords.contains(keyword) && keyword.length() > 0) {
+                            keywords.add(keyword);
                         }
                     }
                 }

@@ -1,14 +1,11 @@
 package de.datasec.pandora.shared.database;
 
 import com.datastax.driver.core.*;
-import com.datastax.driver.core.exceptions.NoHostAvailableException;
 import com.datastax.driver.core.policies.DefaultRetryPolicy;
 import com.datastax.driver.core.policies.RoundRobinPolicy;
-import com.datastax.driver.core.policies.TokenAwarePolicy;
 import com.datastax.driver.core.querybuilder.QueryBuilder;
 
 import java.util.Set;
-import java.util.concurrent.ExecutionException;
 
 /**
  * Created by DataSec on 11.12.2016.
@@ -17,24 +14,25 @@ public class CassandraManager {
 
     private String host;
 
-    private String keyspace;
+    private String keySpace;
 
     private Cluster cluster;
 
     private Session session;
 
-    public CassandraManager(String host, String keyspace) {
+    public CassandraManager(String host, String keySpace) {
         this.host = host;
-        this.keyspace = keyspace;
+        this.keySpace = keySpace;
     }
 
     public void connect(DefaultRetryPolicy defaultRetryPolicy) {
         cluster = Cluster.builder()
                 .addContactPoint(host)
                 .withRetryPolicy(defaultRetryPolicy)
-                .withLoadBalancingPolicy(new TokenAwarePolicy(new RoundRobinPolicy()))
+                .withSocketOptions(new SocketOptions().setReadTimeoutMillis(600000))
+                .withLoadBalancingPolicy(new RoundRobinPolicy())
                 .build();
-        session = cluster.connect(keyspace);
+        session = cluster.connect(keySpace);
         System.out.println("CONNECTED TO CASSANDRA ON: " + host);
     }
 
@@ -60,15 +58,12 @@ public class CassandraManager {
     }
 
     public boolean contains(String tableName, String column, String columnForMatch, Object key) {
-        ResultSet result = null;
-        try {
-            result = session.executeAsync(QueryBuilder.select()
-                    .column(column)
-                    .from(keyspace, tableName)
-                    .where(QueryBuilder.eq(columnForMatch, key))).get();
-        } catch (InterruptedException | ExecutionException | NoHostAvailableException ignore) {}
-
-        return result != null && result.one() != null;
+        return !(session.execute(QueryBuilder.select()
+                .column(column)
+                .from(keySpace, tableName)
+                .where(QueryBuilder.eq(columnForMatch, key)))
+                .isExhausted()
+        );
     }
 
     private void update(String tableName, String keyword, Set<String> urls) {
