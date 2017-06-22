@@ -1,6 +1,7 @@
 package de.datasec.pandora.master.bot.impl;
 
 import de.datasec.pandora.master.Master;
+import de.datasec.pandora.master.bot.MasterBot;
 import de.datasec.pandora.master.listener.MasterBotListener;
 import de.datasec.pandora.shared.database.CassandraManager;
 import de.datasec.pandora.shared.utils.UrlUtils;
@@ -11,6 +12,9 @@ import org.jsoup.nodes.Document;
 
 import java.io.*;
 import java.nio.charset.Charset;
+import java.util.Arrays;
+import java.util.HashSet;
+import java.util.Set;
 import java.util.concurrent.BlockingQueue;
 
 /**
@@ -24,6 +28,8 @@ public class MasterBotBoss {
 
     private UrlValidator urlValidator;
 
+    private Set<String> stopWords = new HashSet<>();
+
     private CassandraManager cassandraManager;
 
     private String currentUrl, tableName, column;
@@ -32,10 +38,13 @@ public class MasterBotBoss {
 
     public MasterBotBoss() {}
 
-    public MasterBotBoss(MasterBotListener masterBotListener, String startUrl, BlockingQueue<String> urlsToVisit, UrlValidator urlValidator) {
+    public MasterBotBoss(MasterBotListener masterBotListener, String startUrl, UrlValidator urlValidator) {
         this.masterBotListener = masterBotListener;
-        this.urlsToVisit = urlsToVisit;
+        urlsToVisit = MasterBot.urlsToVisit;
         this.urlValidator = urlValidator;
+
+        // Stop words
+        stopWords.addAll(Arrays.asList("accounts", ".ly"));
 
         // Cassandra
         cassandraManager = Master.getCassandraManager();
@@ -61,9 +70,11 @@ public class MasterBotBoss {
     protected void crawl() {
         while (true) {
             try {
-                System.out.printf("NULL?: %s RESULT: %d%n", urlsToVisit == null, urlsToVisit.size());
+                if (urlsToVisit == null) {
+                    System.out.printf("Queue NULL?: %s RESULT: %d%n", urlsToVisit == null, urlsToVisit);
+                }
+
                 currentUrl = urlsToVisit.take();
-                System.out.printf("NULL?: %s RESULT: %s%n", currentUrl == null, currentUrl);
 
                 if (currentUrl == null) {
                     continue;
@@ -78,14 +89,26 @@ public class MasterBotBoss {
 
                 doc.getElementsByTag("a").forEach(tag -> {
                     String url = tag.attr("href");
-                    if (urlValidator.isValid(url) && url.length() > 0) {
-                        addUrl(url);
-                    } else if (!(url.length() > 250)) {
-                        repairAndAddUrl(url);
+                    if (!containsStopWord(url)) {
+                        if (urlValidator.isValid(url) && url.length() > 0) {
+                            addUrl(url);
+                        } else if (!(url.length() > 250)) {
+                            repairAndAddUrl(url);
+                        }
                     }
                 });
             } catch (IOException | InterruptedException ignore) {}
         }
+    }
+
+    private boolean containsStopWord(String url) {
+        for (String stopWord : stopWords) {
+            if (url.contains(stopWord)) {
+                return true;
+            }
+        }
+
+        return false;
     }
 
     private void repairAndAddUrl(String url) {
