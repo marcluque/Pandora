@@ -90,21 +90,16 @@ public class SlaveCrawlerThread implements Runnable {
 
         // First subdomain/domain
         String domain = urlParts[0].split("/")[2];
-        if (!keywords.contains(domain) && domain.length() > 0) {
+        if (domain.length() > 0 && !keywords.contains(domain)) {
             keywords.add(domain);
         }
 
         for (String s : urlParts) {
             if (s.contains("/")) {
-                if (!s.startsWith("http")) {
-                    for (int i = 1; i < s.split("/").length; i++) {
-                        String keyword = s.split("[^a-zA-Z0-9_]")[i];
-                        if (!keywords.contains(keyword) && keyword.length() > 0) {
-                            keywords.add(keyword);
-                        }
-                    }
+                String[] potencialKeywords = s.split("/");
+                for (int i = 1; i < potencialKeywords.length; i++) {
+                    checkAndAddKeyword(potencialKeywords[i]);
                 }
-                continue;
             }
 
             // Subdomains
