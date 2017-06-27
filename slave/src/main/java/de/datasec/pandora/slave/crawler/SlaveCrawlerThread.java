@@ -89,10 +89,7 @@ public class SlaveCrawlerThread implements Runnable {
         String[] urlParts = url.replace("www.", "").split("\\.");
 
         // First subdomain/domain
-        String domain = urlParts[0].split("/")[2];
-        if (domain.length() > 0 && !keywords.contains(domain)) {
-            keywords.add(domain);
-        }
+        checkAndAddKeyword(urlParts[0].split("/")[2]);
 
         for (String s : urlParts) {
             if (s.contains("/")) {
@@ -103,8 +100,8 @@ public class SlaveCrawlerThread implements Runnable {
             }
 
             // Subdomains
-            if (!keywords.contains(s) && !s.startsWith("com") && s.matches("^[0-9]") && s.length() > 0) {
-                keywords.add(s);
+            if (!s.startsWith("com")) {
+                checkAndAddKeyword(s);
             }
         }
     }
