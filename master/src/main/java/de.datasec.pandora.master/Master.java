@@ -24,8 +24,6 @@ public class Master implements PacketListener {
 
     private int urlsPerPacket;
 
-    private Server server;
-
     private RoundRobinList<Session> sessions = new LinkedRoundRobinList<>();
 
     public Master(String startUrl, int urlsPerPacket) {
@@ -38,7 +36,7 @@ public class Master implements PacketListener {
     }
 
     public void start() {
-        server = ServerFactory.create(new MasterServerConfig(new PandoraProtocol(this)));
+        Server server = ServerFactory.create(new MasterServerConfig(new PandoraProtocol(this)));
 
         server.addSessionListener(new SessionListener() {
             @Override
