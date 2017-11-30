@@ -6,16 +6,16 @@
         <sourceOutputDir name="target/generated-sources/annotations" />
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
-        <module name="master" />
-        <module name="shared" />
-        <module name="slave" />
+        <module name="pandora-master" />
+        <module name="pandora-shared" />
+        <module name="pandora-slave" />
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
-      <module name="master" target="1.8" />
-      <module name="Pandora" target="1.8" />
-      <module name="shared" target="1.8" />
-      <module name="slave" target="1.8" />
+      <module name="pandora" target="1.8" />
+      <module name="pandora-master" target="1.8" />
+      <module name="pandora-shared" target="1.8" />
+      <module name="pandora-slave" target="1.8" />
     </bytecodeTargetLevel>
   </component>
 </project>

@@ -18,7 +18,7 @@ public class SlavePacketListener implements HydraPacketListener {
     }
 
     @PacketHandler
-    public void onUrlsPacket(Session session, UrlPacket urlPacket) {
+    public void onUrlsPacket(UrlPacket urlPacket, Session session) {
         slaveCrawler.add(urlPacket.getLinksToCrawl());
     }
 }

@@ -44,6 +44,8 @@ public class Master {
                 .childOption(StandardSocketOptions.SO_KEEPALIVE, true)
                 .build();
 
+        System.out.println("Server started!");
+
         // TODO: LISTENER FOR SESSIONS THAT CONNECT TO SERVER
 
         new MasterBot(sessions, startUrl, urlsPerPacket, 3);

@@ -13,13 +13,13 @@
     </modules>
 
     <name>Pandora</name>
-    <description>Pandora is a Cascade (Networking framework) based search engine</description>
+    <description>Pandora is a Hydra (Networking framework) based search engine</description>
     <inceptionYear>2017</inceptionYear>
 
     <developers>
         <developer>
-            <id>DataSec</id>
-            <email>datasec@outlook.de</email>
+            <id>DataSecs</id>
+            <email>datasecs@outlook.de</email>
         </developer>
     </developers>
 
