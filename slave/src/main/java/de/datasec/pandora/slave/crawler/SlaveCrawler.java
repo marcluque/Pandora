@@ -15,12 +15,10 @@ public class SlaveCrawler {
 
     private BlockingQueue<String> urls = new LinkedBlockingQueue<>();
 
-    private ExecutorService executorService;
-
     public SlaveCrawler(int availableProcessorsMultiplicator) {
         int nThreads = Runtime.getRuntime().availableProcessors() * availableProcessorsMultiplicator;
 
-        executorService = Executors.newFixedThreadPool(nThreads);
+        ExecutorService executorService = Executors.newFixedThreadPool(nThreads);
 
         for (int i = 0; i < nThreads; i++) {
             executorService.execute(new SlaveCrawlerThread(urls));

@@ -1,16 +1,20 @@
 package de.datasec.pandora.shared;
 
+import de.datasec.hydra.shared.protocol.HydraProtocol;
+import de.datasec.hydra.shared.protocol.packets.HydraPacketListener;
 import de.datasec.pandora.shared.packets.UrlPacket;
-import de.jackwhite20.cascade.shared.protocol.Protocol;
-import de.jackwhite20.cascade.shared.protocol.listener.PacketListener;
 
 /**
  * Created by DataSec on 27.11.2016.
  */
-public class PandoraProtocol extends Protocol {
+public class PandoraProtocol extends HydraProtocol {
 
-    public PandoraProtocol(PacketListener packetListener) {
+    public PandoraProtocol(HydraPacketListener packetListener) {
         registerListener(packetListener);
+        registerPacket(UrlPacket.class);
+    }
+
+    public PandoraProtocol() {
         registerPacket(UrlPacket.class);
     }
 }

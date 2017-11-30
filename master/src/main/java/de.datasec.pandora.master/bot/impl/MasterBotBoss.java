@@ -102,13 +102,7 @@ public class MasterBotBoss {
     }
 
     private boolean containsStopWord(String url) {
-        for (String stopWord : stopWords) {
-            if (url.contains(stopWord)) {
-                return true;
-            }
-        }
-
-        return false;
+        return stopWords.stream().anyMatch(url::contains);
     }
 
     private void repairAndAddUrl(String url) {
@@ -146,9 +140,9 @@ public class MasterBotBoss {
     }
 
     private void addUrl(String url) {
-        if (!cassandraManager.contains(tableName, column, column, url)) {
+        if (!cassandraManager.contains(tableName, column, url)) {
             urlsToVisit.offer(url);
-            cassandraManager.insert(tableName, column, column, new String[]{column}, new Object[]{url});
+            cassandraManager.insert(tableName, column, new String[]{column}, new Object[]{url});
             masterBotListener.onUrl(url);
 
             // Create url backup
