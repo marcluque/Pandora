@@ -80,7 +80,7 @@ public class MasterBotBoss {
                     continue;
                 }
 
-                Connection con = Jsoup.connect(currentUrl).userAgent(UrlUtils.USER_AGENT).timeout(4000);
+                Connection con = Jsoup.connect(currentUrl).userAgent(UrlUtils.USER_AGENT).timeout(5000);
                 Document doc = con.get();
 
                 if (con.response().statusCode() != 200) {

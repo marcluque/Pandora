@@ -37,17 +37,20 @@ public class CassandraManager {
         System.out.println("CONNECTED TO CASSANDRA ON: " + host);
     }
 
-    public void insert(String tableName, String columnForWhere, String[] columns, Object[] values) {
+    public void insert(String tableName, String column, String[] columns, Object[] values) {
         String[] insertValues = new String[values.length];
 
         for (int i = 0; i < values.length; i++) {
             insertValues[i] = "?";
         }
 
-        if (!contains(tableName, columnForWhere, values[0])) {
-            PreparedStatement statement = session.prepare(String.format("INSERT INTO %s %s VALUES %s;", tableName, createString(columns), createString(insertValues)));
+        if (!contains(tableName, column, values[0])) {
+            PreparedStatement statement = session.prepare(
+                    String.format("INSERT INTO %s %s VALUES %s;", tableName, createString(columns), createString(insertValues)));
 
-            session.executeAsync(new BoundStatement(statement).bind((Object[]) values));
+            BoundStatement boundStatement = new BoundStatement(statement);
+
+            session.executeAsync(boundStatement.bind((Object[]) values));
         } else {
             if (tableName.equalsIgnoreCase("indexes")) {
                 update(tableName, values[0].toString(), (Set<String>) values[1]);
@@ -56,11 +59,12 @@ public class CassandraManager {
     }
 
     public boolean contains(String tableName, String column, Object key) {
-        return session.execute(QueryBuilder.select()
+        return !(session.execute(QueryBuilder.select()
                 .column(column)
                 .from(keySpace, tableName)
-                .where(QueryBuilder.contains("keywords", key)))
-                .one() != null;
+                .limit(1)
+                .where(QueryBuilder.eq(column, key)))
+                .isExhausted());
     }
 
     private void update(String tableName, String keyword, Set<String> urls) {
