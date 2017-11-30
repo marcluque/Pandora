@@ -7,6 +7,7 @@ import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 
 import java.io.IOException;
+import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.concurrent.BlockingQueue;
@@ -41,7 +42,10 @@ public class SlaveCrawlerThread implements Runnable {
                     continue;
                 }
 
-                Connection con = Jsoup.connect(url).userAgent(UrlUtils.USER_AGENT).ignoreHttpErrors(true).timeout(4000);
+                Connection con = Jsoup.connect(url)
+                        .userAgent(UrlUtils.USER_AGENT)
+                        .ignoreHttpErrors(true)
+                        .timeout(4000);
                 Document doc = con.get();
 
                 if (con.response().statusCode() != 200) {
@@ -52,33 +56,25 @@ public class SlaveCrawlerThread implements Runnable {
                 evalUrl(url);
 
                 // Headlines h1
-                doc.getElementsByTag("h1").forEach(element -> {
-                    if(!element.children().isEmpty()) {
-                        for (String headline : element.children().last().text().split("\\s+")) {
-                            checkAndAddKeyword(headline);
-                        }
-                    }
-                });
+                doc.getElementsByTag("h1").stream()
+                        .filter(element -> !element.children().isEmpty())
+                        .forEach(element -> Arrays.stream(element.children().last().text().split("\\s+")).forEach(this::checkAndAddKeyword));
 
                 // Title
-                for (String s : doc.title().split("\\s+")) {
-                    checkAndAddKeyword(s);
-                }
+                Arrays.stream(doc.title().split("\\s+")).forEach(this::checkAndAddKeyword);
 
                 // Meta description
-                for (String s : doc.select("meta[name=description]").attr("content").split("\\s+")) {
-                    checkAndAddKeyword(s);
-                }
+                Arrays.stream(doc.select("meta[name=description]").attr("content").split("\\s+"))
+                        .forEach(this::checkAndAddKeyword);
 
                 // Meta keywords
-                for (String s : doc.select("meta[name=keywords]").attr("content").split("\\s+")) {
-                    checkAndAddKeyword(s);
-                }
+                Arrays.stream(doc.select("meta[name=keywords]").attr("content").split("\\s+"))
+                        .forEach(this::checkAndAddKeyword);
             } catch (IOException | IllegalArgumentException | InterruptedException ignore) {}
 
             urlsToInsert.add(url);
 
-            keywords.forEach(keyword -> Slave.getCassandraManager().insert("indexes", "keyword", "keyword", new String[] {"keyword", "urls"}, new Object[] {keyword, urlsToInsert}));
+            keywords.forEach(keyword -> Slave.getCassandraManager().insert("indexes", "keyword", new String[] {"keyword", "urls"}, new Object[] {keyword, urlsToInsert}));
 
             keywords.clear();
             urlsToInsert.clear();
@@ -91,19 +87,8 @@ public class SlaveCrawlerThread implements Runnable {
         // First subdomain/domain
         checkAndAddKeyword(urlParts[0].split("/")[2]);
 
-        for (String s : urlParts) {
-            if (s.contains("/")) {
-                String[] potencialKeywords = s.split("/");
-                for (int i = 1; i < potencialKeywords.length; i++) {
-                    checkAndAddKeyword(potencialKeywords[i]);
-                }
-            }
-
-            // Subdomains
-            if (!s.startsWith("com")) {
-                checkAndAddKeyword(s);
-            }
-        }
+        Arrays.stream(urlParts).filter(s -> s.contains("/") && !s.startsWith("com"))
+                .forEach(s -> Arrays.stream(s.split("/")).forEach(this::checkAndAddKeyword));
     }
 
     private void checkAndAddKeyword(String keyword) {

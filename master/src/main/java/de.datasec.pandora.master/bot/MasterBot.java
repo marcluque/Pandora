@@ -1,8 +1,8 @@
 package de.datasec.pandora.master.bot;
 
+import de.datasec.hydra.shared.handler.Session;
 import de.datasec.pandora.master.listener.MasterBotListener;
 import de.datasec.pandora.master.roundrobinlist.RoundRobinList;
-import de.jackwhite20.cascade.shared.session.Session;
 import org.apache.commons.validator.routines.UrlValidator;
 
 import java.util.concurrent.BlockingQueue;
@@ -17,20 +17,16 @@ public class MasterBot {
 
     public static BlockingQueue<String> urlsToVisit = new LinkedBlockingQueue<>();
 
-    private ExecutorService executorService;
-
     public MasterBot(RoundRobinList<Session> sessions, String startUrl, int urlsPerPacket, int availableProcessorsMultiplicator) {
         // MasterBotWorker
         new MasterBotWorker(new MasterBotListener(sessions, urlsPerPacket), startUrl, new UrlValidator()).crawl();
 
         int nThreads = Runtime.getRuntime().availableProcessors() * availableProcessorsMultiplicator;
 
-        executorService = Executors.newFixedThreadPool(nThreads);
+        ExecutorService executorService = Executors.newFixedThreadPool(nThreads);
 
         for (int i = 0; i < nThreads; i++) {
             executorService.execute(new MasterBotWorkerThread());
         }
-
-        System.out.println("Queue: " + urlsToVisit + " RESULT: " + urlsToVisit == null);
     }
 }

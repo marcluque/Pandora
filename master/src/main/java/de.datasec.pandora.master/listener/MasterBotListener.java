@@ -1,11 +1,11 @@
 package de.datasec.pandora.master.listener;
 
+import de.datasec.hydra.shared.handler.Session;
 import de.datasec.pandora.master.roundrobinlist.RoundRobinList;
 import de.datasec.pandora.shared.packets.UrlPacket;
-import de.jackwhite20.cascade.shared.session.Session;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 
 /**
  * Created by DataSec on 04.12.2016.
@@ -16,7 +16,7 @@ public class MasterBotListener implements BotListener {
 
     private int urlsPerPacket;
 
-    private List<String> urls = new ArrayList<>();
+    private Set<String> urls = new HashSet<>();
 
     public MasterBotListener(RoundRobinList<Session> sessions, int urlsPerPacket) {
         this.sessions = sessions;

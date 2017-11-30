@@ -32,24 +32,22 @@ public class CassandraManager {
                 .withSocketOptions(new SocketOptions().setReadTimeoutMillis(600000))
                 .withLoadBalancingPolicy(new RoundRobinPolicy())
                 .build();
+
         session = cluster.connect(keySpace);
         System.out.println("CONNECTED TO CASSANDRA ON: " + host);
     }
 
-    public void insert(String tableName, String columnForWhere, String columnForWhereMatch, String[] columns, Object[] values) {
+    public void insert(String tableName, String columnForWhere, String[] columns, Object[] values) {
         String[] insertValues = new String[values.length];
 
         for (int i = 0; i < values.length; i++) {
             insertValues[i] = "?";
         }
 
-        if (!contains(tableName, columnForWhere, columnForWhereMatch, values[0])) {
-            PreparedStatement statement = session.prepare(
-                    String.format("INSERT INTO %s %s VALUES %s;", tableName, createString(columns), createString(insertValues)));
+        if (!contains(tableName, columnForWhere, values[0])) {
+            PreparedStatement statement = session.prepare(String.format("INSERT INTO %s %s VALUES %s;", tableName, createString(columns), createString(insertValues)));
 
-            BoundStatement boundStatement = new BoundStatement(statement);
-
-            session.executeAsync(boundStatement.bind((Object[]) values));
+            session.executeAsync(new BoundStatement(statement).bind((Object[]) values));
         } else {
             if (tableName.equalsIgnoreCase("indexes")) {
                 update(tableName, values[0].toString(), (Set<String>) values[1]);
@@ -57,13 +55,12 @@ public class CassandraManager {
         }
     }
 
-    public boolean contains(String tableName, String column, String columnForMatch, Object key) {
-        return !(session.execute(QueryBuilder.select()
+    public boolean contains(String tableName, String column, Object key) {
+        return session.execute(QueryBuilder.select()
                 .column(column)
                 .from(keySpace, tableName)
-                .where(QueryBuilder.eq(columnForMatch, key)))
-                .isExhausted()
-        );
+                .where(QueryBuilder.contains("keywords", key)))
+                .one() != null;
     }
 
     private void update(String tableName, String keyword, Set<String> urls) {

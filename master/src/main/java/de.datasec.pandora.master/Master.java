@@ -1,22 +1,21 @@
 package de.datasec.pandora.master;
 
 import com.datastax.driver.core.policies.DefaultRetryPolicy;
+import de.datasec.hydra.server.HydraServer;
+import de.datasec.hydra.server.Server;
+import de.datasec.hydra.shared.handler.Session;
 import de.datasec.pandora.master.bot.MasterBot;
-import de.datasec.pandora.master.config.MasterServerConfig;
 import de.datasec.pandora.master.roundrobinlist.LinkedRoundRobinList;
 import de.datasec.pandora.master.roundrobinlist.RoundRobinList;
 import de.datasec.pandora.shared.PandoraProtocol;
 import de.datasec.pandora.shared.database.CassandraManager;
-import de.jackwhite20.cascade.server.Server;
-import de.jackwhite20.cascade.server.ServerFactory;
-import de.jackwhite20.cascade.shared.protocol.listener.PacketListener;
-import de.jackwhite20.cascade.shared.session.Session;
-import de.jackwhite20.cascade.shared.session.SessionListener;
+
+import java.net.StandardSocketOptions;
 
 /**
  * Created by DataSec on 27.11.2016.
  */
-public class Master implements PacketListener {
+public class Master {
 
     private static CassandraManager cassandraManager;
 
@@ -36,37 +35,19 @@ public class Master implements PacketListener {
     }
 
     public void start() {
-        Server server = ServerFactory.create(new MasterServerConfig(new PandoraProtocol(this)));
+        HydraServer server = new Server.Builder("188.68.54.85", 8888, new PandoraProtocol())
+                .bossThreads(4)
+                .workerThreads(2)
+                .option(StandardSocketOptions.TCP_NODELAY, true)
+                .option(StandardSocketOptions.SO_KEEPALIVE, true)
+                .childOption(StandardSocketOptions.TCP_NODELAY, true)
+                .childOption(StandardSocketOptions.SO_KEEPALIVE, true)
+                .build();
 
-        server.addSessionListener(new SessionListener() {
-            @Override
-            public void onConnected(Session session) {
-                sessions.add(session);
+        // TODO: LISTENER FOR SESSIONS THAT CONNECT TO SERVER
 
-                System.out.println("Slave connected! Amount of connected slaves: " + sessions.size());
-            }
-
-            @Override
-            public void onDisconnected(Session session) {
-                sessions.remove(session);
-
-                System.out.println("Slave disconnected! Amount of connected slaves: " + sessions.size());
-            }
-
-            @Override
-            public void onStarted() {
-                System.out.println("Server started!");
-            }
-
-            @Override
-            public void onStopped() {
-                System.out.println("Server stopped!");
-            }
-        });
-
-        server.start();
         new MasterBot(sessions, startUrl, urlsPerPacket, 3);
-        server.stop();
+        server.close();
     }
 
     public static CassandraManager getCassandraManager() {
