@@ -6,6 +6,6 @@ package de.datasec.pandora.master;
 public class PandoraMaster {
 
     public static void main(String[] args) {
-        new Master("https://stackoverflow.com/questions/17146048/malformed-url-no-protocol-error", 100).start();
+        new Master("https://www.jetbrains.com", 100).start();
     }
 }

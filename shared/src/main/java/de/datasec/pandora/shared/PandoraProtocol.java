@@ -1,7 +1,7 @@
 package de.datasec.pandora.shared;
 
 import de.datasec.hydra.shared.protocol.HydraProtocol;
-import de.datasec.hydra.shared.protocol.packets.HydraPacketListener;
+import de.datasec.hydra.shared.protocol.packets.listener.HydraPacketListener;
 import de.datasec.pandora.shared.packets.UrlPacket;
 
 /**

@@ -20,6 +20,8 @@ public class SlaveCrawlerThread implements Runnable {
 
     private static final String SANITIZER = "[^a-zA-Z0-9_ \\-_.\\u00C0-\\u00D6\\u00D8-\\u00F6\\u00F8-\\u00FF]";
 
+    private static final String SPLIT_PATTERN = "\\s+";
+
     private BlockingQueue<String> urls;
 
     private Set<String> urlsToInsert = new HashSet<>();
@@ -27,6 +29,10 @@ public class SlaveCrawlerThread implements Runnable {
     private Set<String> keywords = new HashSet<>();
 
     private String url;
+
+    private String title;
+
+    private String description;
 
     public SlaveCrawlerThread(BlockingQueue<String> urls) {
         this.urls = urls;
@@ -58,23 +64,28 @@ public class SlaveCrawlerThread implements Runnable {
                 // Headlines h1
                 doc.getElementsByTag("h1").stream()
                         .filter(element -> !element.children().isEmpty())
-                        .forEach(element -> Arrays.stream(element.children().last().text().split("\\s+")).forEach(this::checkAndAddKeyword));
+                        .forEach(element -> Arrays.stream(element.children().last().text().split(SPLIT_PATTERN)).forEach(this::checkAndAddKeyword));
 
                 // Title
-                Arrays.stream(doc.title().split("\\s+")).forEach(this::checkAndAddKeyword);
+                title = doc.title();
+                Arrays.stream(title.split(SPLIT_PATTERN)).forEach(this::checkAndAddKeyword);
 
+                // TODO: Add different types of descriptions and add them to the var description
                 // Meta description
-                Arrays.stream(doc.select("meta[name=description]").attr("content").split("\\s+"))
+                Arrays.stream(doc.select("meta[name=description]").attr("content").split(SPLIT_PATTERN))
                         .forEach(this::checkAndAddKeyword);
 
                 // Meta keywords
-                Arrays.stream(doc.select("meta[name=keywords]").attr("content").split("\\s+"))
+                Arrays.stream(doc.select("meta[name=keywords]").attr("content").split(SPLIT_PATTERN))
                         .forEach(this::checkAndAddKeyword);
             } catch (IOException | IllegalArgumentException | InterruptedException ignore) {}
 
             urlsToInsert.add(url);
 
-            keywords.forEach(keyword -> Slave.getCassandraManager().insert("indexes", "keyword", new String[] {"keyword", "urls"}, new Object[] {keyword, urlsToInsert}));
+            keywords.forEach(keyword -> {
+                // Insert to table indexes
+                Slave.getCassandraManager().insert(new Object[] {keyword, new String[]{url, title, description}});
+            });
 
             keywords.clear();
             urlsToInsert.clear();

@@ -1,8 +1,8 @@
 package de.datasec.pandora.slave.listener;
 
 import de.datasec.hydra.shared.handler.Session;
-import de.datasec.hydra.shared.protocol.packets.HydraPacketListener;
-import de.datasec.hydra.shared.protocol.packets.PacketHandler;
+import de.datasec.hydra.shared.protocol.packets.listener.HydraPacketListener;
+import de.datasec.hydra.shared.protocol.packets.listener.PacketHandler;
 import de.datasec.pandora.shared.packets.UrlPacket;
 import de.datasec.pandora.slave.crawler.SlaveCrawler;
 
