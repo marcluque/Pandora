@@ -2,6 +2,8 @@ package de.datasec.pandora.slave;
 
 import com.datastax.driver.core.policies.DefaultRetryPolicy;
 import de.datasec.hydra.client.Client;
+import de.datasec.hydra.shared.handler.Session;
+import de.datasec.hydra.shared.handler.listener.HydraSessionListener;
 import de.datasec.pandora.shared.PandoraProtocol;
 import de.datasec.pandora.shared.database.CassandraManager;
 import de.datasec.pandora.slave.listener.SlavePacketListener;
@@ -25,6 +27,18 @@ public class Slave {
                 .workerThreads(2)
                 .option(StandardSocketOptions.TCP_NODELAY, true)
                 .option(StandardSocketOptions.SO_KEEPALIVE, true)
+                .addSessionListener(new HydraSessionListener() {
+                    @Override
+                    public void onConnected(Session session) {
+                        System.out.println("Connected to Pandora master server!");
+                    }
+
+                    @Override
+                    public void onDisconnected(Session session) {
+                        System.out.println("Disconnected from Pandora master server!");
+                        cassandraManager.disconnect();
+                    }
+                })
                 .build();
     }
 

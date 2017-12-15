@@ -5,12 +5,15 @@ import com.datastax.driver.core.policies.DefaultRetryPolicy;
 import com.datastax.driver.core.policies.RoundRobinPolicy;
 import com.datastax.driver.core.querybuilder.QueryBuilder;
 
-import java.util.Set;
+import java.util.Collections;
+import java.util.HashSet;
 
 /**
  * Created by DataSec on 11.12.2016.
  */
 public class CassandraManager {
+
+    private String indexesTable;
 
     private String host;
 
@@ -23,13 +26,14 @@ public class CassandraManager {
     public CassandraManager(String host, String keySpace) {
         this.host = host;
         this.keySpace = keySpace;
+        indexesTable = "indexes";
     }
 
     public void connect(DefaultRetryPolicy defaultRetryPolicy) {
         cluster = Cluster.builder()
                 .addContactPoint(host)
                 .withRetryPolicy(defaultRetryPolicy)
-                .withSocketOptions(new SocketOptions().setReadTimeoutMillis(600000))
+                .withSocketOptions(new SocketOptions().setReadTimeoutMillis(Integer.MAX_VALUE))
                 .withLoadBalancingPolicy(new RoundRobinPolicy())
                 .build();
 
@@ -37,58 +41,45 @@ public class CassandraManager {
         System.out.println("CONNECTED TO CASSANDRA ON: " + host);
     }
 
-    public void insert(String tableName, String column, String[] columns, Object[] values) {
-        String[] insertValues = new String[values.length];
+    public void insert(Object[] values) {
+        TupleValue tupleValue = cluster.getMetadata().newTupleType(DataType.text(), DataType.text(), DataType.text()).newValue(values[1]);
 
-        for (int i = 0; i < values.length; i++) {
-            insertValues[i] = "?";
-        }
+        if (!contains(indexesTable, "keyword", values[0])) {
+            //String[] tupleValues = ((String[]) (values[1]));
+            //String[] tuple = {tupleValues[0], tupleValues[1], tupleValues[2]};
 
-        if (!contains(tableName, column, values[0])) {
-            PreparedStatement statement = session.prepare(
-                    String.format("INSERT INTO %s %s VALUES %s;", tableName, createString(columns), createString(insertValues)));
-
-            BoundStatement boundStatement = new BoundStatement(statement);
-
-            session.executeAsync(boundStatement.bind((Object[]) values));
+            PreparedStatement statement = session.prepare(String.format("INSERT INTO %s (keyword, urls) VALUES (?, {:tuple});", indexesTable));
+            BoundStatement boundStatement = new BoundStatement(statement).bind(values[1]);
+            boundStatement.setTupleValue(":tuple", tupleValue);
+            session.executeAsync(boundStatement);
         } else {
-            if (tableName.equalsIgnoreCase("indexes")) {
-                update(tableName, values[0].toString(), (Set<String>) values[1]);
-            }
+            update(indexesTable, values[0].toString(), tupleValue);
         }
     }
 
-    public boolean contains(String tableName, String column, Object key) {
+    public void insertCounterTable(String url) {
+        session.executeAsync(QueryBuilder.update("visited")
+                .with(QueryBuilder.incr("pointing_score"))
+                .where(QueryBuilder.eq("url", url)));
+    }
+
+    public boolean contains(String tableName, String column, Object keyword) {
         return !(session.execute(QueryBuilder.select()
                 .column(column)
                 .from(keySpace, tableName)
                 .limit(1)
-                .where(QueryBuilder.eq(column, key)))
+                .where(QueryBuilder.eq(column, keyword)))
                 .isExhausted());
     }
 
-    private void update(String tableName, String keyword, Set<String> urls) {
+    private void update(String tableName, String keyword, TupleValue tuple) {
         session.executeAsync(QueryBuilder.update(tableName)
-                .with(QueryBuilder.addAll("urls", urls))
+                .with(QueryBuilder.addAll("urls", new HashSet<>(Collections.singletonList(tuple))))
                 .where((QueryBuilder.eq("keyword", keyword)))
         );
     }
 
     public void disconnect() {
         cluster.close();
-    }
-
-    private String createString(String[] strings) {
-        String result = "(";
-
-        for (int i = 0; i < strings.length; i++) {
-            result = String.format("%s%s", result, strings[i]);
-
-            if(i < strings.length - 1) {
-                result = String.format("%s,", result);
-            }
-        }
-
-        return String.format("%s)", result);
     }
 }

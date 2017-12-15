@@ -68,35 +68,28 @@ public class MasterBotBoss {
     }
 
     protected void crawl() {
+        final String[] url = new String[1];
+
         while (true) {
             try {
-                if (urlsToVisit == null) {
-                    System.out.printf("Queue NULL?: %s RESULT: %d%n", urlsToVisit == null, urlsToVisit);
-                }
-
-                currentUrl = urlsToVisit.take();
-
-                if (currentUrl == null) {
+                if ((currentUrl = urlsToVisit.take()) == null) {
                     continue;
                 }
 
-                Connection con = Jsoup.connect(currentUrl).userAgent(UrlUtils.USER_AGENT).timeout(5000);
+                Connection con = Jsoup.connect(currentUrl)
+                        .userAgent(UrlUtils.USER_AGENT)
+                        .followRedirects(true)
+                        .ignoreHttpErrors(true)
+                        .timeout(5000);
                 Document doc = con.get();
 
                 if (con.response().statusCode() != 200) {
                     break;
                 }
 
-                doc.getElementsByTag("a").forEach(tag -> {
-                    String url = tag.attr("href");
-                    if (!containsStopWord(url)) {
-                        if (urlValidator.isValid(url) && url.length() > 0) {
-                            addUrl(url);
-                        } else if (!(url.length() > 250)) {
-                            repairAndAddUrl(url);
-                        }
-                    }
-                });
+                doc.getElementsByTag("a").stream()
+                        .filter(tag -> !containsStopWord(url[0] = tag.attr("href")) && url[0].length() > 0)
+                        .forEach(tag -> repairAndAddUrl(url[0]));
             } catch (IOException | InterruptedException ignore) {}
         }
     }
@@ -106,8 +99,12 @@ public class MasterBotBoss {
     }
 
     private void repairAndAddUrl(String url) {
-        // Removes the 2 '//' in front of the link. In order to clean it up
-        url = url.replace("//", "");
+        if (url.startsWith("#") || url.startsWith("javascript")) {
+            addUrl(url);
+        }
+
+        // Removes the 2 '//' in front of the link, if there are some
+        url = url.startsWith("//") ? url.replace("//", "") : url;
 
         // Check first if link is valid
         if (urlValidator.isValid(url)) {
@@ -122,42 +119,57 @@ public class MasterBotBoss {
         }
         // Repairs the link, when for instance just a "/terms" is given
         else if (url.startsWith("/")) {
-            if (urlsToVisit.size() > 0) {
-                url = String.format("%s%s%s", "http://", currentUrl.split("/")[2], url);
-            }
+            url = String.format("%s%s%s", "http://", currentUrl.split("/")[2], url);
 
             if (urlValidator.isValid(url)) {
                 addUrl(url);
             }
         }
         // Puts 'http://www.' in front so link works again
-        else if (!url.startsWith("http://") || !url.contains("www")) {
-            url = String.format("http://%s", url);
+        else if (!url.startsWith("http://") && !url.startsWith("https://")) {
+            url = !url.startsWith("www") ? String.format("http://%s/%s", currentUrl.split("/")[2], url) : String.format("http://%s", url);
+
             if (urlValidator.isValid(url)) {
                 addUrl(url);
             }
+        }
+        // Last check, probably domain wasn't recognized by urlValidator
+        else if (!urlValidator.isValid(url)) {
+            if (url.split("/")[2].split("\\.").length >= 2) {
+                addUrl(url);
+            }
+
+            System.out.println("NOT USABLE: " + url);
         }
     }
 
     private void addUrl(String url) {
         if (!cassandraManager.contains(tableName, column, url)) {
+            url = url.startsWith("https") ? url.replace("https", "http") : url;
+
             urlsToVisit.offer(url);
-            cassandraManager.insert(tableName, column, new String[]{column}, new Object[]{url});
             masterBotListener.onUrl(url);
 
             // Create url backup
             if (urlsToVisit.size() % 1000 == 0) {
                 System.out.println(String.format("LINKS TO CRAWL: %d", urlsToVisit.size()));
-                try (BufferedWriter bufferedWriter = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(latestUrl)))) {
-                    String temp = urlsToVisit.poll();
-                    bufferedWriter.write(temp);
-                    bufferedWriter.write("\n");
-                    bufferedWriter.write(urlsToVisit.peek());
-                    urlsToVisit.offer(temp);
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
+                createBackup(latestUrl);
             }
+        }
+
+        // This is done anyway, as the counter is incremented when url exists and entry is created when url not exists
+        cassandraManager.insertCounterTable(url);
+    }
+
+    private void createBackup(File latestUrl) {
+        try (BufferedWriter bufferedWriter = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(latestUrl)))) {
+            String temp = urlsToVisit.poll();
+            bufferedWriter.write(temp);
+            bufferedWriter.write("\n");
+            bufferedWriter.write(urlsToVisit.peek());
+            urlsToVisit.offer(temp);
+        } catch (IOException e) {
+            e.printStackTrace();
         }
     }
 }

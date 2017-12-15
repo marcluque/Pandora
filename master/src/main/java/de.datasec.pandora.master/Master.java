@@ -4,6 +4,7 @@ import com.datastax.driver.core.policies.DefaultRetryPolicy;
 import de.datasec.hydra.server.HydraServer;
 import de.datasec.hydra.server.Server;
 import de.datasec.hydra.shared.handler.Session;
+import de.datasec.hydra.shared.handler.listener.HydraSessionListener;
 import de.datasec.pandora.master.bot.MasterBot;
 import de.datasec.pandora.master.roundrobinlist.LinkedRoundRobinList;
 import de.datasec.pandora.master.roundrobinlist.RoundRobinList;
@@ -42,11 +43,24 @@ public class Master {
                 .option(StandardSocketOptions.SO_KEEPALIVE, true)
                 .childOption(StandardSocketOptions.TCP_NODELAY, true)
                 .childOption(StandardSocketOptions.SO_KEEPALIVE, true)
+                .addListener(new HydraSessionListener() {
+                    @Override
+                    public void onConnected(Session session) {
+                        sessions.add(session);
+
+                        System.out.println("Slave connected! Amount of connected slaves: " + sessions.size());
+                    }
+
+                    @Override
+                    public void onDisconnected(Session session) {
+                        sessions.remove(session);
+
+                        System.out.println("Slave disconnected! Amount of connected slaves: " + sessions.size());
+                    }
+                })
                 .build();
 
         System.out.println("Server started!");
-
-        // TODO: LISTENER FOR SESSIONS THAT CONNECT TO SERVER
 
         new MasterBot(sessions, startUrl, urlsPerPacket, 3);
         server.close();
