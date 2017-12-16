@@ -18,9 +18,12 @@ public class MasterBotListener implements BotListener {
 
     private Set<String> urls = new HashSet<>();
 
-    public MasterBotListener(RoundRobinList<Session> sessions, int urlsPerPacket) {
+    private int nThreads;
+
+    public MasterBotListener(RoundRobinList<Session> sessions, int urlsPerPacket, int nThreads) {
         this.sessions = sessions;
         this.urlsPerPacket = urlsPerPacket;
+        this.nThreads = nThreads;
     }
 
     @Override
@@ -34,5 +37,9 @@ public class MasterBotListener implements BotListener {
 
             urls.clear();
         }
+    }
+
+    public int getnThreads() {
+        return nThreads;
     }
 }

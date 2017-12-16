@@ -64,6 +64,7 @@ public class MasterBotBoss {
         }
 
         urlsToVisit.offer(startUrl);
+        System.out.printf("Running with %d Threads!%n", masterBotListener.getnThreads());
         System.out.printf("Master thread starting to crawl on: %s%n", startUrl);
     }
 
@@ -72,15 +73,14 @@ public class MasterBotBoss {
 
         while (true) {
             try {
-                if ((currentUrl = urlsToVisit.take()) == null) {
+                System.out.println("GOT THIS ON THREAD: " + Thread.currentThread().getName() + " ID: " + Thread.currentThread().getId());
+                currentUrl = urlsToVisit.take();
+
+                if (currentUrl == null) {
                     continue;
                 }
 
-                Connection con = Jsoup.connect(currentUrl)
-                        .userAgent(UrlUtils.USER_AGENT)
-                        .followRedirects(true)
-                        .ignoreHttpErrors(true)
-                        .timeout(5000);
+                Connection con = Jsoup.connect(currentUrl).userAgent(UrlUtils.USER_AGENT).timeout(10 * 1000);
                 Document doc = con.get();
 
                 if (con.response().statusCode() != 200) {
@@ -90,7 +90,7 @@ public class MasterBotBoss {
                 doc.getElementsByTag("a").stream()
                         .filter(tag -> !containsStopWord(url[0] = tag.attr("href")) && url[0].length() > 0)
                         .forEach(tag -> repairAndAddUrl(url[0]));
-            } catch (IOException | InterruptedException ignore) {}
+            } catch (IOException | InterruptedException | UncheckedIOException ignore) {}
         }
     }
 
@@ -99,8 +99,10 @@ public class MasterBotBoss {
     }
 
     private void repairAndAddUrl(String url) {
+        String oldUrl = url;
+
         if (url.startsWith("#") || url.startsWith("javascript")) {
-            addUrl(url);
+            return;
         }
 
         // Removes the 2 '//' in front of the link, if there are some
@@ -139,7 +141,7 @@ public class MasterBotBoss {
                 addUrl(url);
             }
 
-            System.out.println("NOT USABLE: " + url);
+            System.out.println("NOT USABLE: " + url + " current Url: " + currentUrl + " Old: " + oldUrl);
         }
     }
 

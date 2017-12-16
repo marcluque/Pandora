@@ -18,10 +18,10 @@ public class MasterBot {
     public static BlockingQueue<String> urlsToVisit = new LinkedBlockingQueue<>();
 
     public MasterBot(RoundRobinList<Session> sessions, String startUrl, int urlsPerPacket, int availableProcessorsMultiplicator) {
-        // MasterBotWorker
-        new MasterBotWorker(new MasterBotListener(sessions, urlsPerPacket), startUrl, new UrlValidator()).crawl();
-
         int nThreads = Runtime.getRuntime().availableProcessors() * availableProcessorsMultiplicator;
+
+        // MasterBotWorker
+        new MasterBotWorker(new MasterBotListener(sessions, urlsPerPacket, nThreads), startUrl, new UrlValidator()).crawl();
 
         ExecutorService executorService = Executors.newFixedThreadPool(nThreads);
 

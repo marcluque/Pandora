@@ -41,24 +41,17 @@ public class CassandraManager {
         System.out.println("CONNECTED TO CASSANDRA ON: " + host);
     }
 
-    public void insert(Object[] values) {
-        TupleValue tupleValue = cluster.getMetadata().newTupleType(DataType.text(), DataType.text(), DataType.text()).newValue(values[1]);
-
-        if (!contains(indexesTable, "keyword", values[0])) {
-            //String[] tupleValues = ((String[]) (values[1]));
-            //String[] tuple = {tupleValues[0], tupleValues[1], tupleValues[2]};
-
-            PreparedStatement statement = session.prepare(String.format("INSERT INTO %s (keyword, urls) VALUES (?, {:tuple});", indexesTable));
-            BoundStatement boundStatement = new BoundStatement(statement).bind(values[1]);
-            boundStatement.setTupleValue(":tuple", tupleValue);
-            session.executeAsync(boundStatement);
+    public void insert(String keyword, String[] values) {
+        if (!contains(indexesTable, "keyword", keyword)) {
+            PreparedStatement statement = session.prepare(String.format("INSERT INTO %s (keyword, url_packages) VALUES (?, {('%s', '%s', '%s')});", indexesTable, values[0], values[1], values[2]));
+            session.executeAsync(new BoundStatement(statement).bind(keyword));
         } else {
-            update(indexesTable, values[0].toString(), tupleValue);
+            update(indexesTable, keyword, session.getCluster().getMetadata().newTupleType(DataType.text(), DataType.text(), DataType.text()).newValue(values));
         }
     }
 
     public void insertCounterTable(String url) {
-        session.executeAsync(QueryBuilder.update("visited")
+        session.execute(QueryBuilder.update("visited")
                 .with(QueryBuilder.incr("pointing_score"))
                 .where(QueryBuilder.eq("url", url)));
     }
@@ -74,7 +67,7 @@ public class CassandraManager {
 
     private void update(String tableName, String keyword, TupleValue tuple) {
         session.executeAsync(QueryBuilder.update(tableName)
-                .with(QueryBuilder.addAll("urls", new HashSet<>(Collections.singletonList(tuple))))
+                .with(QueryBuilder.addAll("url_packages", new HashSet<>(Collections.singletonList(tuple))))
                 .where((QueryBuilder.eq("keyword", keyword)))
         );
     }

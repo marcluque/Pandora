@@ -7,6 +7,7 @@ import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 
 import java.io.IOException;
+import java.io.UncheckedIOException;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
@@ -24,15 +25,13 @@ public class SlaveCrawlerThread implements Runnable {
 
     private BlockingQueue<String> urls;
 
-    private Set<String> urlsToInsert = new HashSet<>();
-
     private Set<String> keywords = new HashSet<>();
 
     private String url;
 
     private String title;
 
-    private String description;
+    private String description = "";
 
     public SlaveCrawlerThread(BlockingQueue<String> urls) {
         this.urls = urls;
@@ -42,16 +41,11 @@ public class SlaveCrawlerThread implements Runnable {
     public void run() {
         while (SlaveCrawler.CRAWLING) {
             try {
-                url = urls.poll(10000L, TimeUnit.MILLISECONDS);
-
-                if (url == null) {
+                if ((url = urls.poll(Long.MAX_VALUE, TimeUnit.HOURS)) == null) {
                     continue;
                 }
 
-                Connection con = Jsoup.connect(url)
-                        .userAgent(UrlUtils.USER_AGENT)
-                        .ignoreHttpErrors(true)
-                        .timeout(4000);
+                Connection con = Jsoup.connect(url).userAgent(UrlUtils.USER_AGENT).timeout(10 * 1000);
                 Document doc = con.get();
 
                 if (con.response().statusCode() != 200) {
@@ -78,17 +72,10 @@ public class SlaveCrawlerThread implements Runnable {
                 // Meta keywords
                 Arrays.stream(doc.select("meta[name=keywords]").attr("content").split(SPLIT_PATTERN))
                         .forEach(this::checkAndAddKeyword);
-            } catch (IOException | IllegalArgumentException | InterruptedException ignore) {}
+            } catch (IOException | IllegalArgumentException | InterruptedException | UncheckedIOException ignore) {}
 
-            urlsToInsert.add(url);
-
-            keywords.forEach(keyword -> {
-                // Insert to table indexes
-                Slave.getCassandraManager().insert(new Object[] {keyword, new String[]{url, title, description}});
-            });
-
+            keywords.forEach(keyword -> Slave.getCassandraManager().insert(keyword, new String[]{url, replaceUmlaut(title), replaceUmlaut(description)}));
             keywords.clear();
-            urlsToInsert.clear();
         }
     }
 
@@ -118,6 +105,8 @@ public class SlaveCrawlerThread implements Runnable {
         return input.replace("ü", "(u00fc)")
                 .replace("ö", "(u00f6)")
                 .replace("ä", "(u00e4)")
-                .replace("ß", "(u00df)");
+                .replace("ß", "(u00df)")
+                .replace("\'", "(u0027)")
+                .replace("\"", "(u0022)");
     }
 }
