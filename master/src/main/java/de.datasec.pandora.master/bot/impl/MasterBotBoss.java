@@ -36,8 +36,6 @@ public class MasterBotBoss {
 
     private File latestUrl;
 
-    public MasterBotBoss() {}
-
     public MasterBotBoss(MasterBotListener masterBotListener, String startUrl, UrlValidator urlValidator) {
         this.masterBotListener = masterBotListener;
         urlsToVisit = MasterBot.urlsToVisit;
@@ -74,6 +72,7 @@ public class MasterBotBoss {
         while (true) {
             try {
                 System.out.println("GOT THIS ON THREAD: " + Thread.currentThread().getName() + " ID: " + Thread.currentThread().getId());
+                System.out.println("SIZE: " + urlsToVisit.size());
                 currentUrl = urlsToVisit.take();
 
                 if (currentUrl == null) {

@@ -20,13 +20,12 @@ public class MasterBot {
     public MasterBot(RoundRobinList<Session> sessions, String startUrl, int urlsPerPacket, int availableProcessorsMultiplicator) {
         int nThreads = Runtime.getRuntime().availableProcessors() * availableProcessorsMultiplicator;
 
-        // MasterBotWorker
-        new MasterBotWorker(new MasterBotListener(sessions, urlsPerPacket, nThreads), startUrl, new UrlValidator()).crawl();
-
+        MasterBotListener masterBotListener = new MasterBotListener(sessions, urlsPerPacket, nThreads);
+        UrlValidator urlValidator = new UrlValidator();
         ExecutorService executorService = Executors.newFixedThreadPool(nThreads);
 
         for (int i = 0; i < nThreads; i++) {
-            executorService.execute(new MasterBotWorkerThread());
+            executorService.execute(new MasterBotWorkerThread(masterBotListener, startUrl, urlValidator));
         }
     }
 }
