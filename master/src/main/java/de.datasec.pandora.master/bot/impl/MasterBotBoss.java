@@ -11,7 +11,6 @@ import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 
 import java.io.*;
-import java.nio.charset.Charset;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
@@ -50,7 +49,7 @@ public class MasterBotBoss {
         column = "url";
 
         // UrlBackup
-        latestUrl = new File("latestUrl.txt");
+        /*latestUrl = new File("latestUrl.txt");
         if (latestUrl.exists()) {
             try (BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(new FileInputStream(latestUrl.getName()), Charset.forName("UTF-8")))) {
                 currentUrl = bufferedReader.readLine();
@@ -59,11 +58,10 @@ public class MasterBotBoss {
             } catch (IOException e) {
                 e.printStackTrace();
             }
-        }
+        }*/
 
         urlsToVisit.offer(startUrl);
-        System.out.printf("Running with %d Threads!%n", masterBotListener.getnThreads());
-        System.out.printf("Master thread starting to crawl on: %s%n", startUrl);
+        System.out.printf("Thread starting to crawl on: %s%n", startUrl);
     }
 
     protected void crawl() {
@@ -71,11 +69,7 @@ public class MasterBotBoss {
 
         while (true) {
             try {
-                System.out.println("GOT THIS ON THREAD: " + Thread.currentThread().getName() + " ID: " + Thread.currentThread().getId());
-                System.out.println("SIZE: " + urlsToVisit.size());
-                currentUrl = urlsToVisit.take();
-
-                if (currentUrl == null) {
+                if ((currentUrl = urlsToVisit.take()) == null) {
                     continue;
                 }
 
@@ -89,7 +83,7 @@ public class MasterBotBoss {
                 doc.getElementsByTag("a").stream()
                         .filter(tag -> !containsStopWord(url[0] = tag.attr("href")) && url[0].length() > 0)
                         .forEach(tag -> repairAndAddUrl(url[0]));
-            } catch (IOException | InterruptedException | UncheckedIOException ignore) {}
+            } catch (IOException | InterruptedException | UncheckedIOException | ArrayIndexOutOfBoundsException ignore) {}
         }
     }
 
@@ -98,8 +92,6 @@ public class MasterBotBoss {
     }
 
     private void repairAndAddUrl(String url) {
-        String oldUrl = url;
-
         if (url.startsWith("#") || url.startsWith("javascript")) {
             return;
         }
@@ -139,8 +131,6 @@ public class MasterBotBoss {
             if (url.split("/")[2].split("\\.").length >= 2) {
                 addUrl(url);
             }
-
-            System.out.println("NOT USABLE: " + url + " current Url: " + currentUrl + " Old: " + oldUrl);
         }
     }
 
@@ -152,9 +142,9 @@ public class MasterBotBoss {
             masterBotListener.onUrl(url);
 
             // Create url backup
-            if (urlsToVisit.size() % 1000 == 0) {
+            if (urlsToVisit.size() % (10 * 10000) == 0) {
                 System.out.println(String.format("LINKS TO CRAWL: %d", urlsToVisit.size()));
-                createBackup(latestUrl);
+                //createBackup(latestUrl);
             }
         }
 
@@ -162,6 +152,7 @@ public class MasterBotBoss {
         cassandraManager.insertCounterTable(url);
     }
 
+    // TODO: Make backup enough urls for the amount of threads. Probably separate this to MasterBot class, so there are no conflicts!
     private void createBackup(File latestUrl) {
         try (BufferedWriter bufferedWriter = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(latestUrl)))) {
             String temp = urlsToVisit.poll();

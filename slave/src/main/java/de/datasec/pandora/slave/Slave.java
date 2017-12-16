@@ -7,8 +7,7 @@ import de.datasec.hydra.shared.handler.listener.HydraSessionListener;
 import de.datasec.pandora.shared.PandoraProtocol;
 import de.datasec.pandora.shared.database.CassandraManager;
 import de.datasec.pandora.slave.listener.SlavePacketListener;
-
-import java.net.StandardSocketOptions;
+import io.netty.channel.ChannelOption;
 
 /**
  * Created by DataSec on 27.11.2016.
@@ -23,10 +22,11 @@ public class Slave {
     }
 
     public void connect() {
-        new Client.Builder("188.68.54.85", 8888, new PandoraProtocol(new SlavePacketListener(3)))
+        new Client.Builder("localhost", 8888, new PandoraProtocol(new SlavePacketListener(3)))
                 .workerThreads(2)
-                .option(StandardSocketOptions.TCP_NODELAY, true)
-                .option(StandardSocketOptions.SO_KEEPALIVE, true)
+                .option(ChannelOption.TCP_NODELAY, true)
+                .option(ChannelOption.SO_KEEPALIVE, true)
+                .useEpoll(false)
                 .addSessionListener(new HydraSessionListener() {
                     @Override
                     public void onConnected(Session session) {

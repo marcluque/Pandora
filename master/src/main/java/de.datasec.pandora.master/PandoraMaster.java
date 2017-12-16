@@ -6,6 +6,6 @@ package de.datasec.pandora.master;
 public class PandoraMaster {
 
     public static void main(String[] args) {
-        new Master("https://www.jetbrains.com", 100).start();
+        new Master(50).start();
     }
 }
