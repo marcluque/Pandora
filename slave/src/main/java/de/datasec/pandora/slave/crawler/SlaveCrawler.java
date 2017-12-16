@@ -1,10 +1,7 @@
 package de.datasec.pandora.slave.crawler;
 
 import java.util.Arrays;
-import java.util.concurrent.BlockingQueue;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-import java.util.concurrent.LinkedBlockingQueue;
+import java.util.concurrent.*;
 
 /**
  * Created by DataSec on 10.12.2016.
@@ -27,6 +24,10 @@ public class SlaveCrawler {
 
     public void add(String... urlToAdd) {
         // TODO: Find out what causes invocation error
-        Arrays.stream(urlToAdd).forEach(urls::offer);
+        Arrays.stream(urlToAdd).forEach(url -> {
+            try {
+                urls.offer(url, 30, TimeUnit.SECONDS);
+            } catch (InterruptedException ignore) {}
+        });
     }
 }
