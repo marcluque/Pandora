@@ -25,14 +25,13 @@ public class MasterBot {
 
         int nThreads = Runtime.getRuntime().availableProcessors() * availableProcessorsMultiplicator;
 
-        MasterBotListener masterBotListener = new MasterBotListener(sessions, urlsPerPacket);
         UrlValidator urlValidator = new UrlValidator();
         ExecutorService executorService = Executors.newFixedThreadPool(nThreads);
 
         System.out.printf("Running with %d Threads!%n", nThreads);
 
         for (int i = 0; i < nThreads; i++) {
-            executorService.execute(new MasterBotWorkerThread(masterBotListener, urlsToStart.remove(), urlValidator));
+            executorService.execute(new MasterBotWorkerThread(new MasterBotListener(sessions, urlsPerPacket), urlsToStart.remove(), urlValidator));
         }
     }
 

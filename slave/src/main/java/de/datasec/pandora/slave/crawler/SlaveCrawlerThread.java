@@ -41,7 +41,7 @@ public class SlaveCrawlerThread implements Runnable {
     public void run() {
         while (SlaveCrawler.CRAWLING) {
             try {
-                if ((url = urls.poll(Long.MAX_VALUE, TimeUnit.HOURS)) == null) {
+                if ((url = urls.poll(30, TimeUnit.SECONDS)) == null) {
                     continue;
                 }
 
