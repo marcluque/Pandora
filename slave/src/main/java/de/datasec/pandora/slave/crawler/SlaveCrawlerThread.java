@@ -5,6 +5,8 @@ import de.datasec.pandora.slave.Slave;
 import org.jsoup.Connection;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
+import org.jsoup.nodes.Element;
+import org.jsoup.select.Elements;
 
 import java.io.IOException;
 import java.io.UncheckedIOException;
@@ -13,6 +15,7 @@ import java.util.HashSet;
 import java.util.Set;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.TimeUnit;
+import java.util.stream.Stream;
 
 /**
  * Created by DataSec on 27.11.2016.
@@ -64,17 +67,33 @@ public class SlaveCrawlerThread implements Runnable {
                 title = doc.title();
                 Arrays.stream(title.split(SPLIT_PATTERN)).forEach(this::checkAndAddKeyword);
 
-                // TODO: Add different types of descriptions and add them to the var description
                 // Meta description
-                Arrays.stream(doc.select("meta[name=description]").attr("content").split(SPLIT_PATTERN))
-                        .forEach(this::checkAndAddKeyword);
+                Elements metaProperties = doc.select("meta[property]");
+                metaProperties.stream().filter(node -> node.toString().contains("description")).forEach(node -> Arrays.stream(node.attr("content").split(SPLIT_PATTERN)).forEach(this::checkAndAddKeyword));
+
+                // Description to save in database
+                Element metaDescription = Stream.concat(Stream.concat(metaProperties.stream(), doc.select("meta[name]").stream()), doc.select("meta[name=description]").stream())
+                        .filter(node -> node.toString().contains("description"))
+                        .findAny().orElse(null);
+                description = metaDescription != null ? metaDescription.attr("content").trim() : "";
+
+                // Shorten description
+                int wordAmount = (description.length() - description.replace(" ", "").length()) + 1;
+                int lastIndex = 0;
+                if (wordAmount > 15) {
+                    for (int i = 0; i < 15; i++) {
+                        lastIndex = description.indexOf(" ", lastIndex) + 1;
+                    }
+
+                    description = description.substring(0, lastIndex);
+                }
 
                 // Meta keywords
                 Arrays.stream(doc.select("meta[name=keywords]").attr("content").split(SPLIT_PATTERN))
                         .forEach(this::checkAndAddKeyword);
             } catch (IOException | IllegalArgumentException | InterruptedException | UncheckedIOException ignore) {}
 
-            keywords.forEach(keyword -> Slave.getCassandraManager().insert(keyword, new String[]{url, replaceUmlaut(title), replaceUmlaut(description)}));
+            keywords.forEach(keyword -> Slave.getCassandraManager().insert(keyword, new String[]{replaceUmlaut(url), replaceUmlaut(title), replaceUmlaut(description)}));
             keywords.clear();
         }
     }
