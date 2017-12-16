@@ -4,8 +4,8 @@ import de.datasec.hydra.shared.handler.Session;
 import de.datasec.pandora.master.roundrobinlist.RoundRobinList;
 import de.datasec.pandora.shared.packets.UrlPacket;
 
-import java.util.HashSet;
 import java.util.Set;
+import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * Created by DataSec on 04.12.2016.
@@ -16,14 +16,11 @@ public class MasterBotListener implements BotListener {
 
     private int urlsPerPacket;
 
-    private Set<String> urls = new HashSet<>();
+    private Set<String> urls = ConcurrentHashMap.newKeySet();
 
-    private int nThreads;
-
-    public MasterBotListener(RoundRobinList<Session> sessions, int urlsPerPacket, int nThreads) {
+    public MasterBotListener(RoundRobinList<Session> sessions, int urlsPerPacket) {
         this.sessions = sessions;
         this.urlsPerPacket = urlsPerPacket;
-        this.nThreads = nThreads;
     }
 
     @Override
@@ -37,9 +34,5 @@ public class MasterBotListener implements BotListener {
 
             urls.clear();
         }
-    }
-
-    public int getnThreads() {
-        return nThreads;
     }
 }

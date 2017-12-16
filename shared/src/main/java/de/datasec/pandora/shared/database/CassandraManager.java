@@ -13,11 +13,11 @@ import java.util.HashSet;
  */
 public class CassandraManager {
 
-    private String indexesTable;
-
     private String host;
 
     private String keySpace;
+
+    private String indexesTable;
 
     private Cluster cluster;
 

@@ -26,6 +26,7 @@ public class SlaveCrawler {
     }
 
     public void add(String... urlToAdd) {
-        urls.addAll(Arrays.asList(urlToAdd));
+        // TODO: Find out what causes invocation error
+        Arrays.stream(urlToAdd).forEach(urls::offer);
     }
 }

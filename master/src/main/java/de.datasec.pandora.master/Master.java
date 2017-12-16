@@ -10,8 +10,7 @@ import de.datasec.pandora.master.roundrobinlist.LinkedRoundRobinList;
 import de.datasec.pandora.master.roundrobinlist.RoundRobinList;
 import de.datasec.pandora.shared.PandoraProtocol;
 import de.datasec.pandora.shared.database.CassandraManager;
-
-import java.net.StandardSocketOptions;
+import io.netty.channel.ChannelOption;
 
 /**
  * Created by DataSec on 27.11.2016.
@@ -20,14 +19,13 @@ public class Master {
 
     private static CassandraManager cassandraManager;
 
-    private String startUrl;
-
     private int urlsPerPacket;
 
     private RoundRobinList<Session> sessions = new LinkedRoundRobinList<>();
 
-    public Master(String startUrl, int urlsPerPacket) {
-        this.startUrl = startUrl;
+    private boolean crawlerRunning;
+
+    public Master(int urlsPerPacket) {
         this.urlsPerPacket = urlsPerPacket;
 
         // Cassandra
@@ -36,19 +34,26 @@ public class Master {
     }
 
     public void start() {
-        HydraServer server = new Server.Builder("188.68.54.85", 8888, new PandoraProtocol())
+        HydraServer server = new Server.Builder("localhost", 8888, new PandoraProtocol())
                 .bossThreads(4)
                 .workerThreads(2)
-                .option(StandardSocketOptions.TCP_NODELAY, true)
-                .option(StandardSocketOptions.SO_KEEPALIVE, true)
-                .childOption(StandardSocketOptions.TCP_NODELAY, true)
-                .childOption(StandardSocketOptions.SO_KEEPALIVE, true)
+                .useEpoll(true)
+                .option(ChannelOption.TCP_NODELAY, true)
+                .option(ChannelOption.SO_KEEPALIVE, true)
+                .option(ChannelOption.SO_BACKLOG, 10 * 1000)
+                .childOption(ChannelOption.TCP_NODELAY, true)
+                .childOption(ChannelOption.SO_KEEPALIVE, true)
                 .addListener(new HydraSessionListener() {
                     @Override
                     public void onConnected(Session session) {
                         sessions.add(session);
 
                         System.out.println("Slave connected! Amount of connected slaves: " + sessions.size());
+
+                        if (!crawlerRunning) {
+                            crawlerRunning = true;
+                            new MasterBot(sessions, urlsPerPacket, 3);
+                        }
                     }
 
                     @Override
@@ -62,8 +67,7 @@ public class Master {
 
         System.out.println("Server started!");
 
-        new MasterBot(sessions, startUrl, urlsPerPacket, 3);
-        server.close();
+        //server.close();
     }
 
     public static CassandraManager getCassandraManager() {
