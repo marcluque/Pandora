@@ -94,6 +94,8 @@ public class MasterBotBoss {
     private void repairAndAddUrl(String url) {
         if (url.startsWith("#") || url.startsWith("javascript")) {
             return;
+        } else if (url.endsWith("/")) {
+            url = url.substring(0, url.length() - 1);
         }
 
         // Removes the 2 '//' in front of the link, if there are some

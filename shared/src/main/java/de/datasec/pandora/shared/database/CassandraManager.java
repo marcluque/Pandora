@@ -44,7 +44,7 @@ public class CassandraManager {
     public void insert(String keyword, String[] values) {
         if (!contains(indexesTable, "keyword", keyword)) {
             PreparedStatement statement = session.prepare(String.format("INSERT INTO %s (keyword, url_packages) VALUES (?, {('%s', '%s', '%s')});", indexesTable, values[0], values[1], values[2]));
-            session.executeAsync(new BoundStatement(statement).bind(keyword));
+            session.execute(new BoundStatement(statement).bind(keyword));
         } else {
             update(indexesTable, keyword, session.getCluster().getMetadata().newTupleType(DataType.text(), DataType.text(), DataType.text()).newValue(values));
         }

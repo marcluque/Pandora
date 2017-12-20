@@ -69,11 +69,11 @@ public class SlaveCrawlerThread implements Runnable {
 
                 // Meta description
                 Elements metaProperties = doc.select("meta[property]");
-                metaProperties.stream().filter(node -> node.toString().contains("description")).forEach(node -> Arrays.stream(node.attr("content").split(SPLIT_PATTERN)).forEach(this::checkAndAddKeyword));
+                metaProperties.stream().filter(node -> node.toString().toLowerCase().contains("description")).forEach(node -> Arrays.stream(node.attr("content").split(SPLIT_PATTERN)).forEach(this::checkAndAddKeyword));
 
                 // Description to save in database
                 Element metaDescription = Stream.concat(Stream.concat(metaProperties.stream(), doc.select("meta[name]").stream()), doc.select("meta[name=description]").stream())
-                        .filter(node -> node.toString().contains("description"))
+                        .filter(node -> node.toString().toLowerCase().contains("description"))
                         .findAny().orElse(null);
                 description = metaDescription != null ? metaDescription.attr("content").trim() : "";
 
@@ -101,7 +101,7 @@ public class SlaveCrawlerThread implements Runnable {
     private void evalUrl(String url) {
         String[] urlParts = url.replace("www.", "").split("\\.");
 
-        // First subdomain/domain
+        // Subdomain/domain
         checkAndAddKeyword(urlParts[0].split("/")[2]);
 
         Arrays.stream(urlParts).filter(s -> s.contains("/") && !s.startsWith("com"))
