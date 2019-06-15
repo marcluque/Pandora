@@ -3,7 +3,7 @@
 Pandora is a simple search engine that is powered by [Apache Cassandra](https://github.com/apache/cassandra)
 and [Hydra](https://github.com/DataSecs/Hydra) a networking framework.
 It uses a simple keyword <-> list of links approach for storing everything in a database and would just retrieve all
-the found links for a keyword. The implementation might be a bit old.
+the found links for a keyword, or even several keywords. The implementation might be a bit old.
 
 # Installing
 
