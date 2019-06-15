@@ -13,7 +13,7 @@
     </modules>
 
     <name>Pandora</name>
-    <description>Pandora is a simple search engines that is powered by Apache Cassandra and Hydra a networking framework</description>
+    <description>Pandora is a simple search engine that is powered by Apache Cassandra and Hydra a networking framework</description>
     <inceptionYear>2017</inceptionYear>
 
     <developers>
