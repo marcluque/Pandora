@@ -1,7 +1,7 @@
 package com.marcluque.pandora.shared.utils;
 
 /**
- * Created by DataSecs on 26.12.2016.
+ * Created by marcluque on 26.12.2016.
  */
 public class UrlUtils {
 

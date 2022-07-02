@@ -1,11 +1,11 @@
 package com.marcluque.pandora.shared;
 
-import de.datasecs.hydra.shared.protocol.HydraProtocol;
-import de.datasecs.hydra.shared.protocol.packets.listener.HydraPacketListener;
+import com.marcluque.hydra.shared.protocol.impl.HydraProtocol;
+import com.marcluque.hydra.shared.protocol.packets.listener.HydraPacketListener;
 import com.marcluque.pandora.shared.packets.UrlPacket;
 
 /**
- * Created by DataSecs on 27.11.2016.
+ * Created by marcluque on 27.11.2016.
  */
 public class PandoraProtocol extends HydraProtocol {
 

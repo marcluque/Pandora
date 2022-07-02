@@ -5,7 +5,7 @@ import com.marcluque.pandora.master.listener.MasterBotListener;
 import org.apache.commons.validator.routines.UrlValidator;
 
 /**
- * Created by DataSecs on 29.04.2017.
+ * Created by marcluque on 29.04.2017.
  */
 public class MasterBotWorkerThread extends MasterBotBoss implements Runnable {
 

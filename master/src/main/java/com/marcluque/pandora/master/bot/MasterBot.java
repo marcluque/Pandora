@@ -2,7 +2,7 @@ package com.marcluque.pandora.master.bot;
 
 import com.marcluque.pandora.master.listener.MasterBotListener;
 import com.marcluque.pandora.master.roundrobinlist.RoundRobinList;
-import de.datasecs.hydra.shared.handler.Session;
+import com.marcluque.hydra.shared.handler.Session;
 import org.apache.commons.validator.routines.UrlValidator;
 
 import java.util.Queue;
@@ -12,7 +12,7 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.LinkedBlockingQueue;
 
 /**
- * Created by DataSecs on 29.04.2017.
+ * Created by marcluque on 29.04.2017.
  */
 public class MasterBot {
 
@@ -39,7 +39,7 @@ public class MasterBot {
         urlsToStart.add("http://www.youtube.com");
         urlsToStart.add("http://stackoverflow.com");
         urlsToStart.add("http://en.wikipedia.org/wiki/Wikipedia:Wikipedia_records");
-        urlsToStart.add("http://github.com/DataSecs/Hydra");
+        urlsToStart.add("http://github.com/marcluque/Hydra");
         urlsToStart.add("http://www.rosehosting.com");
         urlsToStart.add("http://www.youtube.com/watch?v=EmsDISWHU0o");
         urlsToStart.add("http://commons.apache.org");

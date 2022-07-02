@@ -1,14 +1,14 @@
 package com.marcluque.pandora.master.listener;
 
 import com.marcluque.pandora.master.roundrobinlist.RoundRobinList;
-import de.datasecs.pandora.shared.packets.UrlPacket;
-import de.datasecs.hydra.shared.handler.Session;
+import com.marcluque.pandora.shared.packets.UrlPacket;
+import com.marcluque.hydra.shared.handler.Session;
 
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 
 /**
- * Created by DataSecs on 04.12.2016.
+ * Created by marcluque on 04.12.2016.
  */
 public class MasterBotListener implements BotListener {
 

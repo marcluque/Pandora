@@ -4,7 +4,7 @@ import java.util.Arrays;
 import java.util.concurrent.*;
 
 /**
- * Created by DataSecs on 10.12.2016.
+ * Created by marcluque on 10.12.2016.
  */
 public class SlaveCrawler {
 

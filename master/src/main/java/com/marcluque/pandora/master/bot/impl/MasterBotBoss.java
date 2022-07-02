@@ -3,8 +3,8 @@ package com.marcluque.pandora.master.bot.impl;
 import com.marcluque.pandora.master.Master;
 import com.marcluque.pandora.master.bot.MasterBot;
 import com.marcluque.pandora.master.listener.MasterBotListener;
-import de.datasecs.pandora.shared.database.CassandraManager;
-import de.datasecs.pandora.shared.utils.UrlUtils;
+import com.marcluque.pandora.shared.database.CassandraManager;
+import com.marcluque.pandora.shared.utils.UrlUtils;
 import org.apache.commons.validator.routines.UrlValidator;
 import org.jsoup.Connection;
 import org.jsoup.Jsoup;
@@ -17,7 +17,7 @@ import java.util.Set;
 import java.util.concurrent.BlockingQueue;
 
 /**
- * Created by DataSecs on 29.04.2017.
+ * Created by marcluque on 29.04.2017.
  */
 public class MasterBotBoss {
 

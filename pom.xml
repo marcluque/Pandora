@@ -2,7 +2,7 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>de.marcluque</groupId>
+    <groupId>com.marcluque</groupId>
     <artifactId>pandora</artifactId>
     <packaging>pom</packaging>
     <version>0.0.1-SNAPSHOT</version>
@@ -13,15 +13,26 @@
     </modules>
 
     <name>Pandora</name>
-    <description>Pandora is a simple search engine that is powered by Apache Cassandra and Hydra a networking framework</description>
+    <description>Pandora is a simple search engine that is powered by Apache Cassandra and Hydra (a network framework)</description>
+    <url>https://github.com/marcluque/Pandora</url>
     <inceptionYear>2017</inceptionYear>
 
     <developers>
         <developer>
             <id>marcluque</id>
+            <name>Marc Luqué</name>
             <email>marcluque@outlook.com</email>
+            <url>https://marcluque.com</url>
+            <organizationUrl>https://github.com/marcluque</organizationUrl>
         </developer>
     </developers>
+
+    <licenses>
+        <license>
+            <name>BSD 2-Clause License</name>
+            <url>https://www.freebsd.org/copyright/freebsd-license.html</url>
+        </license>
+    </licenses>
 
     <build>
         <plugins>

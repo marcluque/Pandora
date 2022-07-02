@@ -1,13 +1,13 @@
 package com.marcluque.pandora.slave.listener;
 
-import de.datasecs.hydra.shared.handler.Session;
-import de.datasecs.hydra.shared.protocol.packets.listener.HydraPacketListener;
-import de.datasecs.hydra.shared.protocol.packets.listener.PacketHandler;
-import de.datasecs.pandora.shared.packets.UrlPacket;
+import com.marcluque.hydra.shared.handler.Session;
+import com.marcluque.hydra.shared.protocol.packets.listener.HydraPacketListener;
+import com.marcluque.hydra.shared.protocol.packets.listener.PacketHandler;
+import com.marcluque.pandora.shared.packets.UrlPacket;
 import com.marcluque.pandora.slave.crawler.SlaveCrawler;
 
 /**
- * Created by DataSecs on 27.11.2016.
+ * Created by marcluque on 27.11.2016.
  */
 public class SlavePacketListener implements HydraPacketListener {
 

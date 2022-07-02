@@ -1,6 +1,6 @@
 package com.marcluque.pandora.slave.crawler;
 
-import de.datasecs.pandora.shared.utils.UrlUtils;
+import com.marcluque.pandora.shared.utils.UrlUtils;
 import com.marcluque.pandora.slave.Slave;
 import org.jsoup.Connection;
 import org.jsoup.Jsoup;
@@ -18,7 +18,7 @@ import java.util.concurrent.TimeUnit;
 import java.util.stream.Stream;
 
 /**
- * Created by DataSecs on 27.11.2016.
+ * Created by marcluque on 27.11.2016.
  */
 public class SlaveCrawlerThread implements Runnable {
 

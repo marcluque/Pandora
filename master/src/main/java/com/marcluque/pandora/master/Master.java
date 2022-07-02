@@ -4,16 +4,16 @@ import com.datastax.driver.core.policies.DefaultRetryPolicy;
 import com.marcluque.pandora.master.bot.MasterBot;
 import com.marcluque.pandora.master.roundrobinlist.LinkedRoundRobinList;
 import com.marcluque.pandora.master.roundrobinlist.RoundRobinList;
-import de.datasecs.hydra.server.HydraServer;
-import de.datasecs.hydra.server.Server;
-import de.datasecs.hydra.shared.handler.Session;
-import de.datasecs.hydra.shared.handler.listener.HydraSessionListener;
-import de.datasecs.pandora.shared.PandoraProtocol;
-import de.datasecs.pandora.shared.database.CassandraManager;
+import com.marcluque.hydra.server.HydraServer;
+import com.marcluque.hydra.server.Server;
+import com.marcluque.hydra.shared.handler.Session;
+import com.marcluque.hydra.shared.handler.listener.HydraSessionListener;
+import com.marcluque.pandora.shared.PandoraProtocol;
+import com.marcluque.pandora.shared.database.CassandraManager;
 import io.netty.channel.ChannelOption;
 
 /**
- * Created by DataSecs on 27.11.2016.
+ * Created by marcluque on 27.11.2016.
  */
 public class Master {
 

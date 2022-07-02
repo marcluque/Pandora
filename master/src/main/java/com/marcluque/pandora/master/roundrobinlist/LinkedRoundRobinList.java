@@ -1,7 +1,7 @@
 package com.marcluque.pandora.master.roundrobinlist;
 
 /**
- * Created by DataSecs on 03.01.2017.
+ * Created by marcluque on 03.01.2017.
  */
 public class LinkedRoundRobinList<E> implements RoundRobinList<E> {
 

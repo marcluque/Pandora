@@ -1,7 +1,7 @@
 package com.marcluque.pandora.master;
 
 /**
- * Created by DataSecs on 27.11.2016.
+ * Created by marcluque on 27.11.2016.
  */
 public class PandoraMaster {
 

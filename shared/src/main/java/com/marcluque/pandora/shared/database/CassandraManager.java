@@ -9,7 +9,7 @@ import java.util.Collections;
 import java.util.HashSet;
 
 /**
- * Created by DataSecs on 11.12.2016.
+ * Created by marcluque on 11.12.2016.
  */
 public class CassandraManager {
 
@@ -58,10 +58,10 @@ public class CassandraManager {
 
     public boolean contains(String tableName, String column, Object keyword) {
         return !(session.execute(QueryBuilder.select()
-                .column(column)
-                .from(keySpace, tableName)
-                .limit(1)
-                .where(QueryBuilder.eq(column, keyword)))
+                        .column(column)
+                        .from(keySpace, tableName)
+                        .limit(1)
+                        .where(QueryBuilder.eq(column, keyword)))
                 .isExhausted());
     }
 
