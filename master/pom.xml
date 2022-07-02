@@ -48,7 +48,7 @@
                         <manifest>
                             <addClasspath>true</addClasspath>
                             <classpathPrefix>lib/</classpathPrefix>
-                            <mainClass>de.datasecs.pandora.master.PandoraMaster</mainClass>
+                            <mainClass>com.marcluque.pandora.master.PandoraMaster</mainClass>
                         </manifest>
                     </archive>
                 </configuration>
