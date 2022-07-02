@@ -11,3 +11,4 @@ javadoc/
 .idea/
 *.iml
 *.iws
+**/target/

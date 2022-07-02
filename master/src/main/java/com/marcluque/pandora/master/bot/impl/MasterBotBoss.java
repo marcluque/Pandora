@@ -10,7 +10,8 @@ import org.jsoup.Connection;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 
-import java.io.*;
+import java.io.IOException;
+import java.io.UncheckedIOException;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
@@ -21,19 +22,21 @@ import java.util.concurrent.BlockingQueue;
  */
 public class MasterBotBoss {
 
-    private MasterBotListener masterBotListener;
+    private final MasterBotListener masterBotListener;
 
-    private BlockingQueue<String> urlsToVisit;
+    private final BlockingQueue<String> urlsToVisit;
 
-    private UrlValidator urlValidator;
+    private final UrlValidator urlValidator;
 
-    private Set<String> stopWords = new HashSet<>();
+    private final Set<String> stopWords = new HashSet<>();
 
-    private CassandraManager cassandraManager;
+    private final CassandraManager cassandraManager;
 
-    private String currentUrl, tableName, column;
+    private String currentUrl;
 
-    private File latestUrl;
+    private final String tableName;
+
+    private final String column;
 
     public MasterBotBoss(MasterBotListener masterBotListener, String startUrl, UrlValidator urlValidator) {
         this.masterBotListener = masterBotListener;
@@ -48,19 +51,11 @@ public class MasterBotBoss {
         tableName = "visited";
         column = "url";
 
-        // UrlBackup
-        /*latestUrl = new File("latestUrl.txt");
-        if (latestUrl.exists()) {
-            try (BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(new FileInputStream(latestUrl.getName()), Charset.forName("UTF-8")))) {
-                currentUrl = bufferedReader.readLine();
-                startUrl = (currentUrl.length() > 0) ? currentUrl : startUrl;
-                urlsToVisit.offer(bufferedReader.readLine());
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }*/
-
-        urlsToVisit.offer(startUrl);
+        try {
+            urlsToVisit.put(startUrl);
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
+        }
         System.out.printf("Thread starting to crawl on: %s%n", startUrl);
     }
 
@@ -69,9 +64,7 @@ public class MasterBotBoss {
 
         while (true) {
             try {
-                if ((currentUrl = urlsToVisit.take()) == null) {
-                    continue;
-                }
+                currentUrl = urlsToVisit.take();
 
                 Connection con = Jsoup.connect(currentUrl).userAgent(UrlUtils.USER_AGENT).timeout(10 * 1000);
                 Document doc = con.get();
@@ -137,33 +130,24 @@ public class MasterBotBoss {
     }
 
     private void addUrl(String url) {
-        if (!cassandraManager.contains(tableName, column, url)) {
-            url = url.startsWith("https") ? url.replace("https", "http") : url;
+        if (cassandraManager.contains(tableName, column, url)) {
+            url = url.replace("https", "http");
 
-            urlsToVisit.offer(url);
+            try {
+                urlsToVisit.put(url);
+            } catch (InterruptedException e) {
+                throw new RuntimeException(e);
+            }
             masterBotListener.onUrl(url);
 
             // Create url backup
             if (urlsToVisit.size() % (10 * 10000) == 0) {
-                System.out.println(String.format("LINKS TO CRAWL: %d", urlsToVisit.size()));
+                System.out.printf("LINKS TO CRAWL: %d%n", urlsToVisit.size());
                 //createBackup(latestUrl);
             }
         }
 
         // This is done anyway, as the counter is incremented when url exists and entry is created when url not exists
         cassandraManager.insertCounterTable(url);
-    }
-
-    // TODO: Make backup enough urls for the amount of threads. Probably separate this to MasterBot class, so there are no conflicts!
-    private void createBackup(File latestUrl) {
-        try (BufferedWriter bufferedWriter = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(latestUrl)))) {
-            String temp = urlsToVisit.poll();
-            bufferedWriter.write(temp);
-            bufferedWriter.write("\n");
-            bufferedWriter.write(urlsToVisit.peek());
-            urlsToVisit.offer(temp);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
     }
 }

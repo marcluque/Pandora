@@ -11,13 +11,14 @@ import com.marcluque.pandora.slave.crawler.SlaveCrawler;
  */
 public class SlavePacketListener implements HydraPacketListener {
 
-    private SlaveCrawler slaveCrawler;
+    private final SlaveCrawler slaveCrawler;
 
     public SlavePacketListener(int availableProcessorsMultiplicator) {
         slaveCrawler = new SlaveCrawler(availableProcessorsMultiplicator);
     }
 
     @PacketHandler
+    @SuppressWarnings("unused") // Method is invoked by Hydra packet handler
     public void onUrlsPacket(UrlPacket urlPacket, Session session) {
         slaveCrawler.add(urlPacket.getLinksToCrawl());
     }

@@ -1,12 +1,12 @@
 package com.marcluque.pandora.slave;
 
 import com.datastax.driver.core.policies.DefaultRetryPolicy;
-import com.marcluque.pandora.slave.listener.SlavePacketListener;
 import com.marcluque.hydra.client.Client;
 import com.marcluque.hydra.shared.handler.Session;
 import com.marcluque.hydra.shared.handler.listener.HydraSessionListener;
 import com.marcluque.pandora.shared.PandoraProtocol;
 import com.marcluque.pandora.shared.database.CassandraManager;
+import com.marcluque.pandora.slave.listener.SlavePacketListener;
 import io.netty.channel.ChannelOption;
 
 /**

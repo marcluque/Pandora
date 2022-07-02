@@ -3,15 +3,17 @@ package com.marcluque.pandora.master.roundrobinlist;
 /**
  * Created by marcluque on 03.01.2017.
  */
-public class LinkedRoundRobinList<E> implements RoundRobinList<E> {
+public class LinkedRoundRobinList<T> implements RoundRobinList<T> {
 
-    private Element start;
+    private final Element<T> start;
 
     private int size, index, robinIndex;
 
     public LinkedRoundRobinList() {
-        start = new Element("head");
-        size = robinIndex = index = 0;
+        start = new Element<>(null);
+        size = 0;
+        robinIndex = 0;
+        index = 0;
     }
 
     @Override
@@ -20,12 +22,12 @@ public class LinkedRoundRobinList<E> implements RoundRobinList<E> {
     }
 
     @Override
-    public E get() {
-        Element e = start;
+    public T get() {
+        Element<T> e = start;
         while (e.next != null) {
             if (e.next.index == robinIndex) {
                 robinIndex = (robinIndex + 1) % size;
-                return (E) e.next.node;
+                return e.next.node;
             }
 
             e = e.next;
@@ -35,43 +37,38 @@ public class LinkedRoundRobinList<E> implements RoundRobinList<E> {
     }
 
     @Override
-    public boolean add(E o) {
+    public void add(T o) {
         if (o != null) {
-            Element e = new Element<>(o);
-            Element pointer = getLastElement();
+            Element<T> e = new Element<>(o);
+            Element<T> pointer = getLastElement();
             pointer.next = e;
             e.prev = pointer;
             e.index = index;
             index++;
             size++;
-            return true;
         }
-
-        return false;
     }
 
     @Override
-    public void remove(E o) {
-        Element e = findObject(o);
+    public void remove(T o) {
+        Element<T> e = findObject(o);
         if (e != null) {
             if (e.next != null) {
                 reduceIndex(e);
                 e.prev.next = e.next;
                 e.next.prev = e.prev;
-                size--;
-                index--;
             } else {
                 e.prev.next = null;
-                size--;
-                index--;
             }
 
+            size--;
+            index--;
             robinIndex = (size != 0) ? (robinIndex + 1) % size : 0;
         }
     }
 
-    private Element getLastElement() {
-        Element e = start;
+    private Element<T> getLastElement() {
+        Element<T> e = start;
         while (e.next != null) {
             e = e.next;
         }
@@ -79,15 +76,15 @@ public class LinkedRoundRobinList<E> implements RoundRobinList<E> {
         return e;
     }
 
-    private void reduceIndex(Element e) {
+    private void reduceIndex(Element<T> e) {
         while (e.next != null) {
             e.next.index--;
             e = e.next;
         }
     }
 
-    private Element findObject(E node) {
-        Element e = start;
+    private Element<T> findObject(T node) {
+        Element<T> e = start;
         while (e.next != null) {
             if (e.next.node.equals(node)) {
                 return e.next;

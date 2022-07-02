@@ -1,13 +1,12 @@
 package com.marcluque.pandora.master;
 
 import com.datastax.driver.core.policies.DefaultRetryPolicy;
-import com.marcluque.pandora.master.bot.MasterBot;
-import com.marcluque.pandora.master.roundrobinlist.LinkedRoundRobinList;
-import com.marcluque.pandora.master.roundrobinlist.RoundRobinList;
-import com.marcluque.hydra.server.HydraServer;
 import com.marcluque.hydra.server.Server;
 import com.marcluque.hydra.shared.handler.Session;
 import com.marcluque.hydra.shared.handler.listener.HydraSessionListener;
+import com.marcluque.pandora.master.bot.MasterBot;
+import com.marcluque.pandora.master.roundrobinlist.LinkedRoundRobinList;
+import com.marcluque.pandora.master.roundrobinlist.RoundRobinList;
 import com.marcluque.pandora.shared.PandoraProtocol;
 import com.marcluque.pandora.shared.database.CassandraManager;
 import io.netty.channel.ChannelOption;
@@ -19,9 +18,9 @@ public class Master {
 
     private static CassandraManager cassandraManager;
 
-    private int urlsPerPacket;
+    private final int urlsPerPacket;
 
-    private RoundRobinList<Session> sessions = new LinkedRoundRobinList<>();
+    private final RoundRobinList<Session> sessions = new LinkedRoundRobinList<>();
 
     private boolean crawlerRunning;
 
@@ -34,7 +33,7 @@ public class Master {
     }
 
     public void start() {
-        HydraServer server = new Server.Builder("localhost", 8888, new PandoraProtocol())
+        new Server.Builder("localhost", 8888, new PandoraProtocol())
                 .bossThreads(4)
                 .workerThreads(2)
                 .useEpoll(true)

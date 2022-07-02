@@ -1,8 +1,8 @@
 package com.marcluque.pandora.master.bot;
 
+import com.marcluque.hydra.shared.handler.Session;
 import com.marcluque.pandora.master.listener.MasterBotListener;
 import com.marcluque.pandora.master.roundrobinlist.RoundRobinList;
-import com.marcluque.hydra.shared.handler.Session;
 import org.apache.commons.validator.routines.UrlValidator;
 
 import java.util.Queue;
@@ -18,7 +18,7 @@ public class MasterBot {
 
     public static BlockingQueue<String> urlsToVisit = new LinkedBlockingQueue<>();
 
-    private Queue<String> urlsToStart = new LinkedBlockingQueue<>();
+    private final Queue<String> urlsToStart = new LinkedBlockingQueue<>();
 
     public MasterBot(RoundRobinList<Session> sessions, int urlsPerPacket, int availableProcessorsMultiplicator) {
         initUrls();

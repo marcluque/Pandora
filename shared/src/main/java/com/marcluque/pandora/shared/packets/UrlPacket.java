@@ -10,12 +10,15 @@ import java.util.Set;
 /**
  * Created by marcluque on 01.12.2016.
  */
-@PacketId(0)
+@PacketId()
 public class UrlPacket extends Packet {
 
     private String[] linksToCrawl;
 
-    public UrlPacket() {}
+    @SuppressWarnings("unused")
+    public UrlPacket() {
+        // Required for packet reconstruction by Hydra
+    }
 
     @Override
     public void read(ByteBuf byteBuf) {

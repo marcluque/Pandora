@@ -3,15 +3,15 @@ package com.marcluque.pandora.master.roundrobinlist;
 /**
  * Created by marcluque on 03.01.2017.
  */
-public class Element<E> {
+public class Element<T> {
 
     public int index;
 
-    public Element next, prev;
+    public Element<T> next, prev;
 
-    public E node;
+    public T node;
 
-    public Element(E node) {
+    public Element(T node) {
         this.node = node;
     }
 

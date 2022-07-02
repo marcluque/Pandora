@@ -13,11 +13,11 @@ import java.util.HashSet;
  */
 public class CassandraManager {
 
-    private String host;
+    private final String host;
 
-    private String keySpace;
+    private final String keySpace;
 
-    private String indexesTable;
+    private final String indexesTable;
 
     private Cluster cluster;
 
@@ -42,11 +42,14 @@ public class CassandraManager {
     }
 
     public void insert(String keyword, String[] values) {
-        if (!contains(indexesTable, "keyword", keyword)) {
-            PreparedStatement statement = session.prepare(String.format("INSERT INTO %s (keyword, url_packages) VALUES (?, {('%s', '%s', '%s')});", indexesTable, values[0], values[1], values[2]));
+        if (contains(indexesTable, "keyword", keyword)) {
+            PreparedStatement statement = session.prepare(
+                    String.format("INSERT INTO %s (keyword, url_packages) VALUES (?, {('%s', '%s', '%s')});",
+                            indexesTable, values[0], values[1], values[2]));
             session.execute(new BoundStatement(statement).bind(keyword));
         } else {
-            update(indexesTable, keyword, session.getCluster().getMetadata().newTupleType(DataType.text(), DataType.text(), DataType.text()).newValue(values));
+            update(indexesTable, keyword, session.getCluster().getMetadata().newTupleType(DataType.text(),
+                    DataType.text(), DataType.text()).newValue((Object) values));
         }
     }
 
@@ -57,12 +60,12 @@ public class CassandraManager {
     }
 
     public boolean contains(String tableName, String column, Object keyword) {
-        return !(session.execute(QueryBuilder.select()
+        return session.execute(QueryBuilder.select()
                         .column(column)
                         .from(keySpace, tableName)
                         .limit(1)
                         .where(QueryBuilder.eq(column, keyword)))
-                .isExhausted());
+                .isExhausted();
     }
 
     private void update(String tableName, String keyword, TupleValue tuple) {

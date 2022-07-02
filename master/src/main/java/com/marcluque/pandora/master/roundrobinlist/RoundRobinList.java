@@ -9,7 +9,7 @@ public interface RoundRobinList<E> {
 
     E get();
 
-    boolean add(E e);
+    void add(E e);
 
     void remove(E e);
 }

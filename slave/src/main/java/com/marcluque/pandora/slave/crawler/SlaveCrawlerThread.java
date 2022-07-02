@@ -12,6 +12,7 @@ import java.io.IOException;
 import java.io.UncheckedIOException;
 import java.util.Arrays;
 import java.util.HashSet;
+import java.util.Objects;
 import java.util.Set;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.TimeUnit;
@@ -22,13 +23,13 @@ import java.util.stream.Stream;
  */
 public class SlaveCrawlerThread implements Runnable {
 
-    private static final String SANITIZER = "[^a-zA-Z0-9_ \\-_.\\u00C0-\\u00D6\\u00D8-\\u00F6\\u00F8-\\u00FF]";
+    private static final String SANITIZER = "[^a-zA-Z\\d_ \\-.\\u00C0-\\u00D6\\u00D8-\\u00F6\\u00F8-\\u00FF]";
 
     private static final String SPLIT_PATTERN = "\\s+";
 
-    private BlockingQueue<String> urls;
+    private final BlockingQueue<String> urls;
 
-    private Set<String> keywords = new HashSet<>();
+    private final Set<String> keywords = new HashSet<>();
 
     private String url;
 
@@ -42,7 +43,8 @@ public class SlaveCrawlerThread implements Runnable {
 
     @Override
     public void run() {
-        while (SlaveCrawler.CRAWLING) {
+        //noinspection InfiniteLoopStatement
+        while (true) {
             try {
                 if ((url = urls.poll(30, TimeUnit.SECONDS)) == null) {
                     continue;
@@ -61,7 +63,10 @@ public class SlaveCrawlerThread implements Runnable {
                 // Headlines h1
                 doc.getElementsByTag("h1").stream()
                         .filter(element -> !element.children().isEmpty())
-                        .forEach(element -> Arrays.stream(element.children().last().text().split(SPLIT_PATTERN)).forEach(this::checkAndAddKeyword));
+                        .forEach(element -> Arrays.stream(Objects.requireNonNull(element.children().last())
+                                .text()
+                                .split(SPLIT_PATTERN))
+                                .forEach(this::checkAndAddKeyword));
 
                 // Title
                 title = doc.title();
@@ -125,7 +130,7 @@ public class SlaveCrawlerThread implements Runnable {
                 .replace("ö", "(u00f6)")
                 .replace("ä", "(u00e4)")
                 .replace("ß", "(u00df)")
-                .replace("\'", "(u0027)")
+                .replace("'", "(u0027)")
                 .replace("\"", "(u0022)");
     }
 }
