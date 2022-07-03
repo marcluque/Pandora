@@ -1,3 +1,6 @@
+![default_cropped-cropped (1)](https://user-images.githubusercontent.com/33261455/177020356-51d01191-e50b-426a-9319-1ff352b63f2b.svg)
+
+
 ## Description
 
 Pandora is a simple search engine that is powered by [Apache Cassandra](https://github.com/apache/cassandra)
